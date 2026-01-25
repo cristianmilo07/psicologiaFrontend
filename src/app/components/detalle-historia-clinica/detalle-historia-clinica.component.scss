@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+.detalle-container {
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Fredoka One', cursive;
+}
+
+.background-decoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  opacity: 0.7;
+  animation: drift 40s infinite linear;
+
+  &.cloud-1 {
+    width: 120px;
+    height: 60px;
+    top: 5%;
+    left: -150px;
+  }
+
+  &.cloud-2 {
+    width: 100px;
+    height: 50px;
+    top: 25%;
+    left: -150px;
+    animation-delay: 10s;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+  }
+
+  &::before {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    left: 15px;
+  }
+
+  &::after {
+    width: 70px;
+    height: 70px;
+    top: -40px;
+    right: 15px;
+  }
+}
+
+.star {
+  position: absolute;
+  font-size: 30px;
+  animation: float 3s ease-in-out infinite;
+
+  &.star-1 {
+    top: 10%;
+    right: 10%;
+    animation-delay: 0s;
+  }
+
+  &.star-2 {
+    top: 40%;
+    right: 15%;
+    animation-delay: 1.5s;
+  }
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .star-icon {
+      font-size: 24px;
+    }
+
+    .home-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+  }
+
+  .header-center {
+    .main-logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-red) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+    }
+  }
+
+  .header-right {
+    .dropdown-select {
+      padding: 8px 12px;
+      border: 2px solid #E0E0E0;
+      border-radius: 10px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: white;
+    }
+  }
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+}
+
+.historia-detalle {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.detalle-header {
+  border-bottom: 2px solid var(--primary-blue);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+
+  h2 {
+    color: var(--primary-blue);
+    font-size: 2rem;
+    margin: 0 0 10px 0;
+  }
+
+  .fecha-creacion {
+    color: var(--text-dark);
+    font-size: 1rem;
+  }
+}
+
+.detalle-grid {
+  display: grid;
+  gap: 30px;
+}
+
+.detalle-section {
+  h3 {
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary-blue);
+    padding-bottom: 10px;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.info-item {
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+  }
+
+  span {
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+}
+
+.sesiones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sesion-card {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  padding: 20px;
+
+  .sesion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+
+    h4 {
+      color: var(--primary-blue);
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .sesion-fecha {
+      color: var(--text-dark);
+      font-size: 0.9rem;
+    }
+  }
+
+  .sesion-content {
+    p {
+      margin: 10px 0;
+      color: var(--text-dark);
+
+      strong {
+        color: var(--primary-blue);
+      }
+    }
+  }
+}
+
+.acciones {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.btn-volver {
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+  }
+}
+
+.error-message {
+  text-align: center;
+  padding: 50px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  p {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(100vw + 200px));
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-grid {
+    gap: 20px;
+  }
+}

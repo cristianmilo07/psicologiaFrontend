@@ -1,0 +1,679 @@
+<div class="zona-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="section-header">
+    <div class="header-left">
+      <span class="gear-icon">⚙️</span>
+      <a routerLink="/zona-profesional" class="back-link">Zona Profesional</a>
+    </div>
+    <div class="header-center">
+      <h1 class="section-title">Reportes Emocionales</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">Usuario</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="welcome-section">
+      <h2 class="welcome-title">
+        Reportes Emocionales
+        <span class="title-star">⭐</span>
+      </h2>
+      <p class="welcome-subtitle">Visualiza y analiza los reportes emocionales de tus pacientes</p>
+    </div>
+
+    <div class="report-content">
+      <form>
+        <div class="report-section">
+          <h3 class="report-title">1️⃣ REPORTE EMOCIONAL</h3>
+          <p class="report-subtitle">(Cómo sería un reporte)</p>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📌 Datos generales</h4>
+            <div class="form-group">
+              <label>Nombre del estudiante:</label>
+              <input type="text" [(ngModel)]="nombreEstudiante" name="nombreEstudiante" placeholder="Ingrese el nombre">
+            </div>
+            <div class="form-group">
+              <label>Edad / Grado:</label>
+              <input type="text" [(ngModel)]="edadGrado" name="edadGrado" placeholder="Ej: 10 años / 5to grado">
+            </div>
+            <div class="form-group">
+              <label>Fecha del reporte:</label>
+              <input type="date" [(ngModel)]="fechaReporte" name="fechaReporte">
+            </div>
+            <div class="form-group">
+              <label>Psicóloga responsable:</label>
+              <input type="text" [(ngModel)]="psicologaResponsable" name="psicologaResponsable" placeholder="Nombre de la psicóloga">
+            </div>
+            <div class="form-group">
+              <label>Periodo evaluado:</label>
+              <input type="text" [(ngModel)]="periodoEvaluado" name="periodoEvaluado" placeholder="Ej: Enero - Marzo 2024">
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📊 Estado emocional general</h4>
+            <p>Evaluación del estado emocional del estudiante durante el periodo observado:</p>
+            <div class="form-group">
+              <label>😊 Estado emocional predominante:</label>
+              <select [(ngModel)]="estadoEmocionalPredominante" name="estadoEmocionalPredominante">
+                <option value="">Seleccionar</option>
+                <option value="Estable">Estable</option>
+                <option value="Variable">Variable</option>
+                <option value="Inestable">Inestable</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>🧠 Regulación emocional:</label>
+              <select [(ngModel)]="regulacionEmocional" name="regulacionEmocional">
+                <option value="">Seleccionar</option>
+                <option value="Adecuada">Adecuada</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Requiere apoyo">Requiere apoyo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>🤝 Relaciones sociales:</label>
+              <select [(ngModel)]="relacionesSociales" name="relacionesSociales">
+                <option value="">Seleccionar</option>
+                <option value="Positivas">Positivas</option>
+                <option value="Dificultades leves">Dificultades leves</option>
+                <option value="Dificultades marcadas">Dificultades marcadas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>📚 Adaptación escolar:</label>
+              <select [(ngModel)]="adaptacionEscolar" name="adaptacionEscolar">
+                <option value="">Seleccionar</option>
+                <option value="Buena">Buena</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Observaciones psicológicas</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="observacionesPsicologicas" name="observacionesPsicologicas" rows="4" placeholder="Describa las observaciones psicológicas..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('observacionesPsicologicas')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🎯 Recomendaciones generales</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="recomendacionesGenerales" name="recomendacionesGenerales" rows="3" placeholder="Ingrese las recomendaciones..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('recomendacionesGenerales')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">2️⃣ REPORTE DETALLADO</h3>
+          <p class="report-subtitle">(Análisis profundo)</p>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🔍 Evaluación emocional</h4>
+            <div class="form-group">
+              <label>Identificación de emociones frecuentes:</label>
+              <input type="text" [(ngModel)]="emocionesFrecuentes" name="emocionesFrecuentes" placeholder="Ej: alegría, tristeza, enojo, ansiedad">
+            </div>
+            <div class="form-group">
+              <label>Nivel de autoestima:</label>
+              <select [(ngModel)]="nivelAutoestima" name="nivelAutoestima">
+                <option value="">Seleccionar</option>
+                <option value="Alto">Alto</option>
+                <option value="Medio">Medio</option>
+                <option value="Bajo">Bajo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Manejo del estrés y frustración:</label>
+              <select [(ngModel)]="manejoEstresFrustracion" name="manejoEstresFrustracion">
+                <option value="">Seleccionar</option>
+                <option value="Adecuado">Adecuado</option>
+                <option value="En desarrollo">En desarrollo</option>
+                <option value="Requiere intervención">Requiere intervención</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">👨‍👩‍👧 Contexto familiar y social</h4>
+            <div class="form-group">
+              <label>Apoyo familiar percibido:</label>
+              <select [(ngModel)]="apoyoFamiliar" name="apoyoFamiliar">
+                <option value="">Seleccionar</option>
+                <option value="Alto">Alto</option>
+                <option value="Medio">Medio</option>
+                <option value="Bajo">Bajo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cambios recientes:</label>
+              <input type="text" [(ngModel)]="cambiosRecientes" name="cambiosRecientes" placeholder="Describa cambios familiares, académicos o sociales">
+            </div>
+            <div class="form-group">
+              <label>Relación con figuras de autoridad:</label>
+              <select [(ngModel)]="relacionAutoridad" name="relacionAutoridad">
+                <option value="">Seleccionar</option>
+                <option value="Positiva">Positiva</option>
+                <option value="Neutral">Neutral</option>
+                <option value="Dificultades">Dificultades</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🏫 Contexto académico</h4>
+            <div class="form-group">
+              <label>Atención y concentración:</label>
+              <select [(ngModel)]="atencionConcentracion" name="atencionConcentracion">
+                <option value="">Seleccionar</option>
+                <option value="Buena">Buena</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Motivación escolar:</label>
+              <select [(ngModel)]="motivacionEscolar" name="motivacionEscolar">
+                <option value="">Seleccionar</option>
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Conducta en aula:</label>
+              <select [(ngModel)]="conductaAula" name="conductaAula">
+                <option value="">Seleccionar</option>
+                <option value="Adecuada">Adecuada</option>
+                <option value="Requiere atención">Requiere atención</option>
+                <option value="Problemática">Problemática</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🧠 Conclusión psicológica</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="conclusionPsicologica" name="conclusionPsicologica" rows="3" placeholder="Ingrese la conclusión psicológica..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('conclusionPsicologica')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">3️⃣ SEGUIMIENTO PERSONALIZADO</h3>
+          <p class="report-subtitle">(Plan de acompañamiento)</p>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📆 Frecuencia</h4>
+            <div class="form-group">
+              <label>Sesiones individuales:</label>
+              <select [(ngModel)]="frecuenciaSesiones" name="frecuenciaSesiones">
+                <option value="">Seleccionar</option>
+                <option value="Semanal">Semanal</option>
+                <option value="Quincenal">Quincenal</option>
+                <option value="Mensual">Mensual</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Observación en aula:</label>
+              <select [(ngModel)]="observacionAula" name="observacionAula">
+                <option value="">Seleccionar</option>
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🎯 Objetivos del seguimiento</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="objetivosSeguimiento" name="objetivosSeguimiento" rows="3" placeholder="Describa los objetivos..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('objetivosSeguimiento')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🛠️ Estrategias aplicadas</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="estrategiasAplicadas" name="estrategiasAplicadas" rows="3" placeholder="Describa las estrategias aplicadas..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('estrategiasAplicadas')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📈 Evolución</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="evolucion" name="evolucion" rows="3" placeholder="Describa la evolución observada..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('evolucion')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">4️⃣ RECURSOS Y ESTRATEGIAS</h3>
+          <p class="report-subtitle">(Para estudiantes, docentes y familias)</p>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🧠 Para el estudiante</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="recursosEstudiante" name="recursosEstudiante" rows="3" placeholder="Describa recursos para el estudiante..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('recursosEstudiante')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">👩‍🏫 Para docentes</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="recursosDocentes" name="recursosDocentes" rows="3" placeholder="Describa recursos para docentes..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('recursosDocentes')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">👨‍👩‍👧 Para la familia</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="recursosFamilia" name="recursosFamilia" rows="3" placeholder="Describa recursos para la familia..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('recursosFamilia')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">🌈 Frase de cierre del reporte</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="fraseCierre" name="fraseCierre" rows="2" placeholder="Ingrese la frase de cierre..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('fraseCierre')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">5️⃣ Estado Emocional Actual</h3>
+          <p class="report-subtitle">(Marcar o seleccionar)</p>
+
+          <div class="form-group">
+            <table class="emotion-table">
+              <thead>
+                <tr>
+                  <th>Emoción</th>
+                  <th>Frecuencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Alegría</td>
+                  <td>
+                    <label><input type="radio" [(ngModel)]="alegria" name="alegria" value="Alta"> Alta</label>
+                    <label><input type="radio" [(ngModel)]="alegria" name="alegria" value="Media"> Media</label>
+                    <label><input type="radio" [(ngModel)]="alegria" name="alegria" value="Baja"> Baja</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tristeza</td>
+                  <td>
+                    <label><input type="radio" [(ngModel)]="tristeza" name="tristeza" value="Alta"> Alta</label>
+                    <label><input type="radio" [(ngModel)]="tristeza" name="tristeza" value="Media"> Media</label>
+                    <label><input type="radio" [(ngModel)]="tristeza" name="tristeza" value="Baja"> Baja</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ansiedad</td>
+                  <td>
+                    <label><input type="radio" [(ngModel)]="ansiedad" name="ansiedad" value="Alta"> Alta</label>
+                    <label><input type="radio" [(ngModel)]="ansiedad" name="ansiedad" value="Media"> Media</label>
+                    <label><input type="radio" [(ngModel)]="ansiedad" name="ansiedad" value="Baja"> Baja</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Enojo</td>
+                  <td>
+                    <label><input type="radio" [(ngModel)]="enojo" name="enojo" value="Alta"> Alta</label>
+                    <label><input type="radio" [(ngModel)]="enojo" name="enojo" value="Media"> Media</label>
+                    <label><input type="radio" [(ngModel)]="enojo" name="enojo" value="Baja"> Baja</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Miedo</td>
+                  <td>
+                    <label><input type="radio" [(ngModel)]="miedo" name="miedo" value="Alta"> Alta</label>
+                    <label><input type="radio" [(ngModel)]="miedo" name="miedo" value="Media"> Media</label>
+                    <label><input type="radio" [(ngModel)]="miedo" name="miedo" value="Baja"> Baja</label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Observación breve:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="observacionBreve" name="observacionBreve" rows="3" placeholder="Ingrese la observación breve..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('observacionBreve')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">6️⃣ Regulación Emocional</h3>
+
+          <div class="form-group">
+            <table class="emotion-table">
+              <thead>
+                <tr>
+                  <th>Regulación Emocional</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Adecuada</td>
+                  <td><input type="radio" [(ngModel)]="regulacionEmocionalNueva" name="regulacionEmocionalNueva" value="Adecuada"></td>
+                </tr>
+                <tr>
+                  <td>En proceso</td>
+                  <td><input type="radio" [(ngModel)]="regulacionEmocionalNueva" name="regulacionEmocionalNueva" value="En proceso"></td>
+                </tr>
+                <tr>
+                  <td>Requiere apoyo</td>
+                  <td><input type="radio" [(ngModel)]="regulacionEmocionalNueva" name="regulacionEmocionalNueva" value="Requiere apoyo"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Descripción:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="descripcionRegulacion" name="descripcionRegulacion" rows="3" placeholder="Ingrese la descripción..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('descripcionRegulacion')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">7️⃣ Habilidades Sociales</h3>
+
+          <div class="form-group">
+            <table class="emotion-table">
+              <thead>
+                <tr>
+                  <th>Aspecto</th>
+                  <th>Opción</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="3">Relación con pares</td>
+                  <td>Buena</td>
+                  <td><input type="radio" [(ngModel)]="relacionPares" name="relacionPares" value="Buena"></td>
+                </tr>
+                <tr>
+                  <td>Regular</td>
+                  <td><input type="radio" [(ngModel)]="relacionPares" name="relacionPares" value="Regular"></td>
+                </tr>
+                <tr>
+                  <td>Dificultad</td>
+                  <td><input type="radio" [(ngModel)]="relacionPares" name="relacionPares" value="Dificultad"></td>
+                </tr>
+                <tr>
+                  <td rowspan="3">Relación con docentes</td>
+                  <td>Buena</td>
+                  <td><input type="radio" [(ngModel)]="relacionDocentes" name="relacionDocentes" value="Buena"></td>
+                </tr>
+                <tr>
+                  <td>Regular</td>
+                  <td><input type="radio" [(ngModel)]="relacionDocentes" name="relacionDocentes" value="Regular"></td>
+                </tr>
+                <tr>
+                  <td>Dificultad</td>
+                  <td><input type="radio" [(ngModel)]="relacionDocentes" name="relacionDocentes" value="Dificultad"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Comentario:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="comentarioHabilidades" name="comentarioHabilidades" rows="3" placeholder="Ingrese el comentario..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('comentarioHabilidades')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">8️⃣ Comportamiento en el Entorno Escolar</h3>
+
+          <div class="form-group">
+            <table class="emotion-table">
+              <thead>
+                <tr>
+                  <th>Aspecto</th>
+                  <th>Opción</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="3">Atención en clase</td>
+                  <td>Alta</td>
+                  <td><input type="radio" [(ngModel)]="atencionClase" name="atencionClase" value="Alta"></td>
+                </tr>
+                <tr>
+                  <td>Media</td>
+                  <td><input type="radio" [(ngModel)]="atencionClase" name="atencionClase" value="Media"></td>
+                </tr>
+                <tr>
+                  <td>Baja</td>
+                  <td><input type="radio" [(ngModel)]="atencionClase" name="atencionClase" value="Baja"></td>
+                </tr>
+                <tr>
+                  <td rowspan="3">Cumplimiento de normas</td>
+                  <td>Sí</td>
+                  <td><input type="radio" [(ngModel)]="cumplimientoNormas" name="cumplimientoNormas" value="Sí"></td>
+                </tr>
+                <tr>
+                  <td>Parcial</td>
+                  <td><input type="radio" [(ngModel)]="cumplimientoNormas" name="cumplimientoNormas" value="Parcial"></td>
+                </tr>
+                <tr>
+                  <td>No</td>
+                  <td><input type="radio" [(ngModel)]="cumplimientoNormas" name="cumplimientoNormas" value="No"></td>
+                </tr>
+                <tr>
+                  <td rowspan="3">Manejo de frustración</td>
+                  <td>Adecuado</td>
+                  <td><input type="radio" [(ngModel)]="manejoFrustracion" name="manejoFrustracion" value="Adecuado"></td>
+                </tr>
+                <tr>
+                  <td>En proceso</td>
+                  <td><input type="radio" [(ngModel)]="manejoFrustracion" name="manejoFrustracion" value="En proceso"></td>
+                </tr>
+                <tr>
+                  <td>Dificultad</td>
+                  <td><input type="radio" [(ngModel)]="manejoFrustracion" name="manejoFrustracion" value="Dificultad"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">9️⃣ Fortalezas Emocionales</h3>
+          <p class="report-subtitle">(Espacio clave y positivo)</p>
+
+          <div class="form-group">
+            <div class="textarea-container">
+              <textarea [(ngModel)]="fortalezas" name="fortalezas" rows="4" placeholder="Liste las fortalezas..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('fortalezas')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Ejemplo:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="ejemploFortalezas" name="ejemploFortalezas" rows="3" placeholder="Ingrese un ejemplo..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('ejemploFortalezas')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">1️⃣0️⃣ Dificultades Identificadas</h3>
+          <p class="report-subtitle">(Solo si aplica)</p>
+
+          <div class="form-group">
+            <div class="textarea-container">
+              <textarea [(ngModel)]="dificultades" name="dificultades" rows="4" placeholder="Liste las dificultades..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('dificultades')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Ejemplo:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="ejemploDificultades" name="ejemploDificultades" rows="3" placeholder="Ingrese un ejemplo..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('ejemploDificultades')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">1️⃣1️⃣  Nivel de Riesgo Emocional</h3>
+
+          <div class="form-group">
+            <table class="emotion-table">
+              <thead>
+                <tr>
+                  <th>Nivel de Riesgo</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Bajo</td>
+                  <td><input type="radio" [(ngModel)]="nivelRiesgo" name="nivelRiesgo" value="Bajo"></td>
+                </tr>
+                <tr>
+                  <td>Medio</td>
+                  <td><input type="radio" [(ngModel)]="nivelRiesgo" name="nivelRiesgo" value="Medio"></td>
+                </tr>
+                <tr>
+                  <td>Alto</td>
+                  <td><input type="radio" [(ngModel)]="nivelRiesgo" name="nivelRiesgo" value="Alto"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Nota profesional:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="notaProfesional" name="notaProfesional" rows="3" placeholder="Ingrese la nota profesional..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('notaProfesional')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">1️⃣2️⃣ Recomendaciones</h3>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">Para el estudiante:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="recomendacionesEstudiante" name="recomendacionesEstudiante" rows="3" placeholder="Ingrese recomendaciones..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('recomendacionesEstudiante')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">Para el colegio:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="recomendacionesColegio" name="recomendacionesColegio" rows="3" placeholder="Ingrese recomendaciones..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('recomendacionesColegio')" title="Hablar">🎤</button>
+            </div>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">Para la familia:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="recomendacionesFamilia" name="recomendacionesFamilia" rows="3" placeholder="Ingrese recomendaciones..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('recomendacionesFamilia')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">1️⃣3️⃣ Seguimiento</h3>
+
+          <div class="form-group">
+            <table class="emotion-table">
+              <thead>
+                <tr>
+                  <th>Tipo de Seguimiento</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>No requerido</td>
+                  <td><input type="radio" [(ngModel)]="seguimiento" name="seguimiento" value="No requerido"></td>
+                </tr>
+                <tr>
+                  <td>Seguimiento mensual</td>
+                  <td><input type="radio" [(ngModel)]="seguimiento" name="seguimiento" value="Seguimiento mensual"></td>
+                </tr>
+                <tr>
+                  <td>Seguimiento quincenal</td>
+                  <td><input type="radio" [(ngModel)]="seguimiento" name="seguimiento" value="Seguimiento quincenal"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="report-subsection">
+            <h4 class="subsection-title">📝 Observación:</h4>
+            <div class="textarea-container">
+              <textarea [(ngModel)]="observacionSeguimiento" name="observacionSeguimiento" rows="3" placeholder="Ingrese la observación..." style="width: 100%;"></textarea>
+              <button type="button" class="mic-btn" (click)="startSpeechRecognition('observacionSeguimiento')" title="Hablar">🎤</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3 class="report-title">✍️ Firma profesional</h3>
+
+          <div class="form-group">
+            <label>Psicóloga/o:</label>
+            <input type="text" [(ngModel)]="firmaProfesional" name="firmaProfesional" placeholder="Nombre del profesional">
+          </div>
+
+          <div class="form-group">
+            <label>Registro profesional:</label>
+            <input type="text" [(ngModel)]="registroProfesional" name="registroProfesional" placeholder="Número de registro">
+          </div>
+        </div>
+
+        <button type="button" class="report-button" (click)="generarReporte()">Generar Reporte</button>
+      </form>
+    </div>
+  </main>
+</div>

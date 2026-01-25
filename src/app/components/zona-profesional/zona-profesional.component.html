@@ -1,0 +1,80 @@
+<div class="zona-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="section-header">
+    <div class="header-left">
+      <span class="star-icon"><img src="assets/images/logoCarolinaPsicologa.png" alt="Logo Carolina Psicóloga" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></span>
+      <a routerLink="/dashboard" class="back-link">Home</a>
+    </div>
+    <div class="header-center">
+      <h1 class="section-title">Zona Profesional</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">Usuario</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="welcome-section">
+      <h2 class="welcome-title">
+        Panel de Control del Psicólogo
+        <span class="title-star">⭐</span>
+      </h2>
+      <p class="welcome-subtitle">Gestiona tus pacientes y sesiones de manera eficiente</p>
+    </div>
+
+    <div class="zones-section">
+      <div class="zone-card large zone-ninos" routerLink="/historia-clinica" *ngIf="user?.role === 'admin'">
+        <div class="zone-image-container">
+          <img src="assets/images/clinicalHistory.png" alt="Zona Niños" class="zone-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="zone-icon fallback" style="display: none;">👦</div>
+        </div>
+        <div class="zone-title-banner banner-ninos">
+          <h3 class="zone-title">Historia Clinica</h3>
+        </div>
+      </div>
+
+      <div class="zone-card large zone-padres" routerLink="/calendario" *ngIf="user?.role === 'admin'">
+        <div class="zone-image-container">
+          <img src="assets/images/groupSessions.png" alt="Zona Padres" class="zone-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="zone-icon fallback" style="display: none;">👨‍👩</div>
+        </div>
+        <div class="zone-title-banner banner-padres">
+          <h3 class="zone-title">Agendar cita</h3>
+        </div>
+      </div>
+
+      <div class="zone-card large zone-profesional" routerLink="/atenciones-grupales">
+        <div class="zone-image-container">
+          <img src="assets/images/scheduleAppointment.png" alt="Zona Profesional" class="zone-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="zone-icon fallback" style="display: none;">👩‍⚕️</div>
+        </div>
+        <div class="zone-title-banner banner-profesional">
+          <h3 class="zone-title">Atenciones grupales</h3>
+        </div>
+      </div>
+
+      <div class="zone-card large zone-emocionales" routerLink="/lista-reportes-emocionales" *ngIf="user?.role === 'admin'">
+        <div class="zone-image-container">
+          <img src="assets/images/emotionalReport.png" alt="Reportes Emocionales" class="zone-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="zone-icon fallback" style="display: none;">📊</div>
+        </div>
+        <div class="zone-title-banner banner-emocionales">
+          <h3 class="zone-title">Reportes emocionales</h3>
+        </div>
+      </div>
+    </div>
+
+    
+  </main>
+</div>

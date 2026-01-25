@@ -1,0 +1,239 @@
+<div class="dashboard-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+    <div class="star star-3">⭐</div>
+    <div class="rainbow"></div>
+  </div>
+
+  <header class="main-header">
+    <div class="header-left">
+      <span class="star-icon">⭐</span>
+      <a routerLink="/historia-clinica" class="home-link">Regresar</a>
+    </div>
+    <div class="header-center">
+      <img src="assets/images/logoCarolinaPsicologa.png" alt="Logo Carolina Psicóloga" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <h1 class="main-logo fallback" style="display: none;">Carolina Psicóloga</h1>
+    </div>
+    <div class="header-right">
+      <span class="icon">💬</span>
+      <span class="icon">👤</span>
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">{{ user?.name || 'Usuario' }}</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="form-container">
+      <h1 *ngIf="!loading">Editar Historia Clínica</h1>
+      <div *ngIf="loading" class="loading">Cargando historia clínica...</div>
+
+      <form *ngIf="!loading" [formGroup]="historiaClinicaForm" (ngSubmit)="onSubmit()" class="historia-form">
+        <div class="form-section">
+          <h2>Información del Paciente</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombrePaciente">Nombre del Paciente *</label>
+              <input type="text" id="nombrePaciente" formControlName="nombrePaciente" placeholder="Ingrese el nombre completo">
+            </div>
+            <div class="form-group">
+              <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+              <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="genero">Género *</label>
+              <select id="genero" formControlName="genero">
+                <option value="">Seleccione</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" formControlName="telefono" placeholder="Número de teléfono">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" id="direccion" formControlName="direccion" placeholder="Dirección completa">
+          </div>
+          <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" id="email" formControlName="email" placeholder="correo@ejemplo.com">
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Información Familiar</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombrePadre">Nombre del Padre *</label>
+              <input type="text" id="nombrePadre" formControlName="nombrePadre" placeholder="Nombre completo del padre">
+            </div>
+            <div class="form-group">
+              <label for="nombreMadre">Nombre de la Madre *</label>
+              <input type="text" id="nombreMadre" formControlName="nombreMadre" placeholder="Nombre completo de la madre">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombreAcudiente">Nombre del Acudiente *</label>
+              <input type="text" id="nombreAcudiente" formControlName="nombreAcudiente" placeholder="Nombre completo del acudiente">
+            </div>
+            <div class="form-group">
+              <label for="parentescoAcudiente">Parentesco del Acudiente *</label>
+              <select id="parentescoAcudiente" formControlName="parentescoAcudiente">
+                <option value="">Seleccione</option>
+                <option value="papa">Papá</option>
+                <option value="mama">Mamá</option>
+                <option value="abuelos">Abuelos</option>
+                <option value="tios">Tíos</option>
+                <option value="otros">Otros</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tieneHermanosColegio">¿Tiene hermanos/as en el colegio?</label>
+              <select id="tieneHermanosColegio" formControlName="tieneHermanosColegio">
+                <option value="">Seleccione</option>
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="gradoHermano">Grado del hermano/a</label>
+              <input type="text" id="gradoHermano" formControlName="gradoHermano" placeholder="Ej: 3ro de primaria">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Información Médica</h2>
+          <div class="form-group">
+            <label for="motivoConsulta">Motivo de Consulta *</label>
+            <textarea id="motivoConsulta" formControlName="motivoConsulta" rows="3" placeholder="Describa el motivo de la consulta"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="antecedentesMedicos">Antecedentes Médicos</label>
+            <textarea id="antecedentesMedicos" formControlName="antecedentesMedicos" rows="4" placeholder="Historial médico relevante, alergias, medicamentos, etc."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="sintomasActuales">Síntomas Actuales *</label>
+            <textarea id="sintomasActuales" formControlName="sintomasActuales" rows="4" placeholder="Describa los síntomas actuales"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Diagnóstico y Tratamiento</h2>
+          <div class="form-group">
+            <label for="diagnostico">Diagnóstico</label>
+            <textarea id="diagnostico" formControlName="diagnostico" rows="3" placeholder="Diagnóstico médico"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="planTratamiento">Plan de Tratamiento</label>
+            <textarea id="planTratamiento" formControlName="planTratamiento" rows="4" placeholder="Plan de tratamiento recomendado"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="notas">Notas Adicionales</label>
+            <textarea id="notas" formControlName="notas" rows="3" placeholder="Observaciones adicionales"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>PIAR</h2>
+          <div class="form-group">
+            <label for="archivos">Archivos (Imágenes o PDFs)</label>
+            <input type="file" id="archivos" multiple accept="image/*,.pdf" (change)="onFileChange($event)">
+          </div>
+          <div *ngIf="existingFiles.length > 0" class="existing-files">
+            <h3>Archivos Existentes:</h3>
+            <ul>
+              <li *ngFor="let file of existingFiles; let i = index">
+                {{ file.nombre }} ({{ (file.tamano / 1024).toFixed(2) }} KB)
+                <button type="button" (click)="removeExistingFile(i)" class="btn-remove-file">❌</button>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="selectedFiles.length > 0" class="selected-files">
+            <h3>Archivos Nuevos Seleccionados:</h3>
+            <ul>
+              <li *ngFor="let file of selectedFiles; let i = index">
+                {{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)
+                <button type="button" (click)="removeFile(i)" class="btn-remove-file">❌</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Sesiones de Terapia</h2>
+          <button type="button" class="btn-add" (click)="agregarSesion()">Agregar Sesión</button>
+          <div class="sesiones-list" formArrayName="sesiones">
+            <div *ngFor="let sesion of sesiones.controls; let i = index" [formGroupName]="i" class="sesion-item">
+              <div class="sesion-header">
+                <h3>Sesión {{ i + 1 }}</h3>
+                <button type="button" class="btn-remove" (click)="eliminarSesion(i)">Eliminar</button>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Fecha *</label>
+                  <input type="date" formControlName="fecha">
+                </div>
+                <div class="form-group">
+                  <label>Tipo de Sesión *</label>
+                  <select formControlName="tipo">
+                    <option value="">Seleccione</option>
+                    <option value="evaluacion">Evaluación Inicial</option>
+                    <option value="terapia">Sesión de Terapia</option>
+                    <option value="seguimiento">Seguimiento</option>
+                    <option value="cierre">Cierre</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Notas de la Sesión *</label>
+                <textarea formControlName="notas" rows="3" placeholder="Notas detalladas de la sesión"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Objetivos</label>
+                <textarea formControlName="objetivos" rows="2" placeholder="Objetivos trabajados en la sesión"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Progreso</label>
+                <textarea formControlName="progreso" rows="2" placeholder="Progreso observado"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="volver()">Cancelar</button>
+          <button type="submit" class="btn-submit" [disabled]="!historiaClinicaForm.valid">Actualizar Historia Clínica</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Modal de confirmación -->
+  <div *ngIf="showConfirmModal" class="modal-overlay">
+    <div class="modal-content">
+      <h2>Confirmar Actualización</h2>
+      <p>¿Estás segura que quieres actualizar la historia clínica de <strong>{{ historiaClinicaForm.value.nombrePaciente }}</strong>?</p>
+      <div class="modal-actions">
+        <button class="btn-cancel-modal" (click)="cancelUpdate()">Cancelar</button>
+        <button class="btn-confirm" (click)="confirmUpdate()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>

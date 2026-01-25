@@ -1,0 +1,26 @@
+<div class="background-decoration" *ngIf="showBackground">
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <div class="star star-1">⭐</div>
+  <div class="star star-2">⭐</div>
+  <div class="star star-3">⭐</div>
+  <div class="rainbow"></div>
+</div>
+
+<header class="main-header">
+  <div class="header-left">
+    <span class="star-icon"><img src="assets/images/LogoPsicologaCaroNombre.png" alt="Logo Carolina Psicóloga" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></span>
+  </div>
+  <div class="header-center">
+    <h1 class="main-logo">{{ title }}</h1>
+  </div>
+  <div class="header-right">
+    <div class="dropdown">
+      <select class="dropdown-select" (change)="onSelectChange($event)">
+        <option value="">{{ user?.name || 'Usuario' }}</option>
+        <option value="logout">Cerrar Sesión</option>
+      </select>
+    </div>
+  </div>
+</header>

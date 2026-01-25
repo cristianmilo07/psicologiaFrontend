@@ -1,0 +1,12 @@
+# Cache de Angular
+.angular/
+
+# Dependencias
+node_modules/
+
+# Archivos de compilación
+dist/
+out-tsc/
+
+# Variables de entorno locales
+.env

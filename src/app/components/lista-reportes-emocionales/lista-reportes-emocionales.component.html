@@ -1,0 +1,68 @@
+<div class="zona-container">
+<div class="background-decoration">
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <div class="star star-1">⭐</div>
+  <div class="star star-2">⭐</div>
+  <div class="star star-3">⭐</div>
+  <div class="rainbow"></div>
+</div>
+
+<header class="main-header">
+<div class="header-left">
+  <span class="star-icon">⭐</span>
+  <a routerLink="/zona-profesional" class="home-link">← Volver</a>
+</div>
+<div class="header-center">
+   <img src="assets/images/logoCarolinaPsicologa.png" alt="Logo Carolina Psicóloga" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+   <h1 class="main-logo fallback" style="display: none;">Carolina Psicóloga</h1>
+ </div>
+<div class="header-right">
+  <span class="icon">💬</span>
+  <span class="icon">👤</span>
+  <div class="dropdown">
+    <select class="dropdown-select" (change)="onSelectChange($event)">
+      <option value="">{{ user?.name || 'Usuario' }}</option>
+      <option value="logout">Cerrar Sesión</option>
+    </select>
+  </div>
+</div>
+</header>
+
+<div class="lista-container">
+  <div class="header-section">
+    <h1 class="page-title">📋 Lista de Reportes Emocionales</h1>
+    <a routerLink="/reportes-emocionales" class="btn-create">➕ Crear Nuevo Reporte</a>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <p>Cargando reportes...</p>
+  </div>
+
+  <div class="no-reports" *ngIf="!loading && reportes.length === 0">
+    <p>No hay reportes emocionales registrados.</p>
+    <a routerLink="/reportes-emocionales" class="btn-create">Crear el primer reporte</a>
+  </div>
+
+  <div class="reports-grid" *ngIf="!loading && reportes.length > 0">
+    <div class="report-card" *ngFor="let reporte of reportes">
+      <div class="card-header">
+        <h3 class="student-name">{{ reporte.nombreEstudiante }}</h3>
+        <span class="report-date">{{ reporte.fechaReporte | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      <div class="card-body">
+        <p class="info-item"><strong>Edad/Grado:</strong> {{ reporte.edadGrado }}</p>
+        <p class="info-item"><strong>Psicóloga:</strong> {{ reporte.psicologaResponsable }}</p>
+        <p class="info-item"><strong>Estado emocional:</strong> {{ reporte.estadoEmocionalPredominante }}</p>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-view" (click)="verReporte(reporte._id!)">👁️ Ver</button>
+        <button class="btn-delete" (click)="eliminarReporte(reporte._id!)">🗑️ Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

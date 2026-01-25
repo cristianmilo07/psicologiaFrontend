@@ -1,0 +1,175 @@
+<div class="view-container" *ngIf="reporte">
+  <div class="header-section">
+    <button class="btn-back" (click)="volver()">⬅️ Volver</button>
+    <h1 class="page-title">👁️ Reporte Emocional</h1>
+    <button class="btn-pdf" (click)="descargarPDF()">📄 Descargar PDF</button>
+  </div>
+
+  <div class="report-content">
+    <!-- All the report sections in read-only format -->
+    <div class="report-section">
+      <h3 class="report-title">🧾 1. REPORTE EMOCIONAL</h3>
+      <div class="report-subsection">
+        <h4 class="subsection-title">📌 Datos generales</h4>
+        <div class="info-grid">
+          <p><strong>Nombre del estudiante:</strong> {{ reporte.nombreEstudiante }}</p>
+          <p><strong>Edad / Grado:</strong> {{ reporte.edadGrado }}</p>
+          <p><strong>Fecha del reporte:</strong> {{ reporte.fechaReporte | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Psicóloga responsable:</strong> {{ reporte.psicologaResponsable }}</p>
+          <p><strong>Periodo evaluado:</strong> {{ reporte.periodoEvaluado }}</p>
+        </div>
+      </div>
+
+      <div class="report-subsection">
+        <h4 class="subsection-title">📊 Estado emocional general</h4>
+        <div class="info-grid">
+          <p><strong>😊 Estado emocional predominante:</strong> {{ reporte.estadoEmocionalPredominante }}</p>
+          <p><strong>🧠 Regulación emocional:</strong> {{ reporte.regulacionEmocional }}</p>
+          <p><strong>🤝 Relaciones sociales:</strong> {{ reporte.relacionesSociales }}</p>
+          <p><strong>📚 Adaptación escolar:</strong> {{ reporte.adaptacionEscolar }}</p>
+        </div>
+      </div>
+
+      <div class="report-subsection">
+        <h4 class="subsection-title">📝 Observaciones psicológicas</h4>
+        <p>{{ reporte.observacionesPsicologicas }}</p>
+      </div>
+
+      <div class="report-subsection">
+        <h4 class="subsection-title">🎯 Recomendaciones generales</h4>
+        <p>{{ reporte.recomendacionesGenerales }}</p>
+      </div>
+    </div>
+
+    <!-- Continue with other sections -->
+    <div class="report-section">
+      <h3 class="report-title">📑 2. REPORTE DETALLADO</h3>
+      <div class="report-subsection">
+        <h4 class="subsection-title">🔍 Evaluación emocional</h4>
+        <div class="info-grid">
+          <p><strong>Emociones frecuentes:</strong> {{ reporte.emocionesFrecuentes }}</p>
+          <p><strong>Nivel de autoestima:</strong> {{ reporte.nivelAutoestima }}</p>
+          <p><strong>Manejo del estrés y frustración:</strong> {{ reporte.manejoEstresFrustracion }}</p>
+        </div>
+      </div>
+
+      <div class="report-subsection">
+        <h4 class="subsection-title">👨‍👩‍👧 Contexto familiar y social</h4>
+        <div class="info-grid">
+          <p><strong>Apoyo familiar:</strong> {{ reporte.apoyoFamiliar }}</p>
+          <p><strong>Cambios recientes:</strong> {{ reporte.cambiosRecientes }}</p>
+          <p><strong>Relación con autoridad:</strong> {{ reporte.relacionAutoridad }}</p>
+        </div>
+      </div>
+
+      <div class="report-subsection">
+        <h4 class="subsection-title">🏫 Contexto académico</h4>
+        <div class="info-grid">
+          <p><strong>Atención y concentración:</strong> {{ reporte.atencionConcentracion }}</p>
+          <p><strong>Motivación escolar:</strong> {{ reporte.motivacionEscolar }}</p>
+          <p><strong>Conducta en aula:</strong> {{ reporte.conductaAula }}</p>
+        </div>
+      </div>
+
+      <div class="report-subsection">
+        <h4 class="subsection-title">🧠 Conclusión psicológica</h4>
+        <p>{{ reporte.conclusionPsicologica }}</p>
+      </div>
+    </div>
+
+    <!-- Continue with remaining sections -->
+    <div class="report-section">
+      <h3 class="report-title">🔄 3. SEGUIMIENTO PERSONALIZADO</h3>
+      <div class="info-grid">
+        <p><strong>Frecuencia sesiones:</strong> {{ reporte.frecuenciaSesiones }}</p>
+        <p><strong>Observación en aula:</strong> {{ reporte.observacionAula }}</p>
+      </div>
+      <p><strong>Objetivos:</strong> {{ reporte.objetivosSeguimiento }}</p>
+      <p><strong>Estrategias:</strong> {{ reporte.estrategiasAplicadas }}</p>
+      <p><strong>Evolución:</strong> {{ reporte.evolucion }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">🧩 4. RECURSOS Y ESTRATEGIAS</h3>
+      <p><strong>Para el estudiante:</strong> {{ reporte.recursosEstudiante }}</p>
+      <p><strong>Para docentes:</strong> {{ reporte.recursosDocentes }}</p>
+      <p><strong>Para la familia:</strong> {{ reporte.recursosFamilia }}</p>
+      <p><strong>Frase de cierre:</strong> {{ reporte.fraseCierre }}</p>
+    </div>
+
+    <!-- Additional sections -->
+    <div class="report-section">
+      <h3 class="report-title">2️⃣ Estado Emocional Actual</h3>
+      <table class="emotion-table">
+        <tr><td>Alegría</td><td>{{ reporte.alegria }}</td></tr>
+        <tr><td>Tristeza</td><td>{{ reporte.tristeza }}</td></tr>
+        <tr><td>Ansiedad</td><td>{{ reporte.ansiedad }}</td></tr>
+        <tr><td>Enojo</td><td>{{ reporte.enojo }}</td></tr>
+        <tr><td>Miedo</td><td>{{ reporte.miedo }}</td></tr>
+      </table>
+      <p><strong>Observación breve:</strong> {{ reporte.observacionBreve }}</p>
+    </div>
+
+    <!-- Continue with other sections -->
+    <div class="report-section">
+      <h3 class="report-title">3️⃣ Regulación Emocional</h3>
+      <p><strong>Estado:</strong> {{ reporte.regulacionEmocionalNueva }}</p>
+      <p><strong>Descripción:</strong> {{ reporte.descripcionRegulacion }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">4️⃣ Habilidades Sociales</h3>
+      <p><strong>Relación con pares:</strong> {{ reporte.relacionPares }}</p>
+      <p><strong>Relación con docentes:</strong> {{ reporte.relacionDocentes }}</p>
+      <p><strong>Comentario:</strong> {{ reporte.comentarioHabilidades }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">5️⃣ Comportamiento en el Entorno Escolar</h3>
+      <p><strong>Atención en clase:</strong> {{ reporte.atencionClase }}</p>
+      <p><strong>Cumplimiento de normas:</strong> {{ reporte.cumplimientoNormas }}</p>
+      <p><strong>Manejo de frustración:</strong> {{ reporte.manejoFrustracion }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">6️⃣ Fortalezas Emocionales</h3>
+      <p>{{ reporte.fortalezas }}</p>
+      <p><strong>Ejemplo:</strong> {{ reporte.ejemploFortalezas }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">7️⃣ Dificultades Identificadas</h3>
+      <p>{{ reporte.dificultades }}</p>
+      <p><strong>Ejemplo:</strong> {{ reporte.ejemploDificultades }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">8️⃣ Nivel de Riesgo Emocional</h3>
+      <p><strong>Nivel:</strong> {{ reporte.nivelRiesgo }}</p>
+      <p><strong>Nota profesional:</strong> {{ reporte.notaProfesional }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">9️⃣ Recomendaciones</h3>
+      <p><strong>Para estudiante:</strong> {{ reporte.recomendacionesEstudiante }}</p>
+      <p><strong>Para colegio:</strong> {{ reporte.recomendacionesColegio }}</p>
+      <p><strong>Para familia:</strong> {{ reporte.recomendacionesFamilia }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">🔄 10️⃣ Seguimiento</h3>
+      <p><strong>Tipo:</strong> {{ reporte.seguimiento }}</p>
+      <p><strong>Observación:</strong> {{ reporte.observacionSeguimiento }}</p>
+    </div>
+
+    <div class="report-section">
+      <h3 class="report-title">✍️ Firma profesional</h3>
+      <p><strong>Psicóloga/o:</strong> {{ reporte.firmaProfesional }}</p>
+      <p><strong>Registro:</strong> {{ reporte.registroProfesional }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+  <p>Cargando reporte...</p>
+</div>

@@ -1,0 +1,105 @@
+<div class="zona-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="section-header">
+    <div class="header-left">
+      <span class="star-icon">⭐</span>
+      <a routerLink="/dashboard" class="back-link">Home</a>
+    </div>
+    <div class="header-center">
+      <h1 class="section-title">Zona Niños</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">Usuario</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="section-content">
+    <div class="subsection">
+      <h2 class="subsection-title">Ayuda y Consejos para tu Hijo</h2>
+      
+      <div class="action-cards">
+        <div class="action-card card-red">
+          <img src="assets/images/progreso.png" alt="Progreso" class="action-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="card-icon fallback" style="display: none;">📊</div>
+          <h3 class="card-title">Progreso de Lucas</h3>
+        </div>
+
+        <div class="action-card card-green">
+          <img src="assets/images/consejos.png" alt="Consejos" class="action-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="card-icon fallback" style="display: none;">💡</div>
+          <h3 class="card-title">Consejos Prácticos</h3>
+        </div>
+
+        <div class="action-card card-orange">
+          <img src="assets/images/agendar.png" alt="Agendar" class="action-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="card-icon fallback" style="display: none;">📅</div>
+          <h3 class="card-title">Agendar Cita</h3>
+        </div>
+
+        <div class="action-card card-blue">
+          <img src="assets/images/mensajes.png" alt="Mensajes" class="action-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="card-icon fallback" style="display: none;">💬</div>
+          <h3 class="card-title">Mensajes del Psicólogo</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="emotion-section">
+      <h2 class="subsection-title">Reporte de Emociones</h2>
+      
+      <div class="emotion-content">
+        <div class="story-card">
+          <div class="story-book">
+            <div class="book-cover">
+              <img src="assets/images/historia-animada.png" alt="Historia Animada" class="book-image" onerror="this.style.display='none';">
+              <div class="book-face fallback" style="display: none;">😊</div>
+              <div class="book-shapes fallback" style="display: none;">
+                <span class="shape">🔵</span>
+                <span class="shape">🟢</span>
+                <span class="shape">🔴</span>
+              </div>
+            </div>
+            <button class="play-button">
+              ▶ Ver Historia Animada
+            </button>
+          </div>
+        </div>
+
+        <div class="emotion-chart">
+          <div class="chart-title">Emociones</div>
+          <div class="emotions-list">
+            <div *ngFor="let emotion of emotions" class="emotion-item">
+              <div class="emotion-info">
+                <span class="emotion-icon">{{ emotion.icon }}</span>
+                <span class="emotion-name">{{ emotion.name }}</span>
+              </div>
+              <div class="emotion-bar-container">
+                <div 
+                  class="emotion-bar" 
+                  [style.width.%]="emotion.value"
+                  [style.background-color]="emotion.color">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-footer">
+            <span>❤️</span>
+            <span>⭐</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+

@@ -1,0 +1,571 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+.zona-container {
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Fredoka One', cursive;
+}
+
+.background-decoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  opacity: 0.7;
+  animation: drift 40s infinite linear;
+
+  &.cloud-1 {
+    width: 120px;
+    height: 60px;
+    top: 5%;
+    left: -150px;
+  }
+
+  &.cloud-2 {
+    width: 100px;
+    height: 50px;
+    top: 25%;
+    left: -150px;
+    animation-delay: 10s;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+  }
+
+  &::before {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    left: 15px;
+  }
+
+  &::after {
+    width: 70px;
+    height: 70px;
+    top: -40px;
+    right: 15px;
+  }
+}
+
+.star {
+  position: absolute;
+  font-size: 30px;
+  animation: float 3s ease-in-out infinite;
+
+  &.star-1 {
+    top: 10%;
+    right: 10%;
+    animation-delay: 0s;
+  }
+
+  &.star-2 {
+    top: 40%;
+    right: 15%;
+    animation-delay: 1.5s;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .gear-icon {
+      font-size: 24px;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+  }
+
+  .header-center {
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-red) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  .header-right {
+    .dropdown-select {
+      padding: 8px 12px;
+      border: 2px solid #E0E0E0;
+      border-radius: 10px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: white;
+    }
+  }
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+
+  .welcome-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    .title-star {
+      font-size: 1.8rem;
+      animation: float 3s ease-in-out infinite;
+      display: inline-block;
+    }
+  }
+
+  .welcome-subtitle {
+    font-size: 1.2rem;
+    color: #34495E;
+    font-weight: 400;
+  }
+}
+
+.report-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.zone-card {
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &.large {
+    min-height: 200px;
+    width: 300px;
+  }
+
+  &.zone-emocionales {
+    background: #879ac1;
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.8) 2px, transparent 2px),
+      radial-gradient(circle at 75% 15%, rgba(135, 206, 235, 0.6) 3px, transparent 3px),
+      radial-gradient(circle at 50% 75%, rgba(255, 255, 255, 0.7) 2px, transparent 2px),
+      radial-gradient(circle at 15% 85%, rgba(135, 206, 235, 0.5) 2px, transparent 2px);
+    background-size: 100px 100px, 80px 80px, 120px 120px, 90px 90px;
+    background-position: 0 0, 30px 20px, 60px 40px, 20px 60px;
+  }
+
+  .zone-image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    position: relative;
+  }
+
+  .zone-image {
+    width: 100%;
+    height: 100%;
+    max-height: 140px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .zone-icon {
+    font-size: 4rem;
+
+    &.fallback {
+      display: block;
+    }
+  }
+
+  .zone-title-banner {
+    padding: 15px 20px;
+    text-align: center;
+    border-radius: 0 0 25px 25px;
+
+    &.banner-emocionales {
+      background: #394b71;
+    }
+
+    .zone-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(100vw + 200px));
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+  }
+}
+
+.report-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.report-button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-red) 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.report-content {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.report-section {
+  margin-bottom: 40px;
+
+  &:last-child {
+    margin-bottom: 20px;
+  }
+}
+
+.report-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-blue);
+  margin-bottom: 5px;
+}
+
+.report-subtitle {
+  font-size: 1rem;
+  color: #34495E;
+  font-weight: 400;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.report-subsection {
+  margin-bottom: 25px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.subsection-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 10px;
+}
+
+.data-list,
+.status-list,
+.recommendations-list,
+.evaluation-list,
+.context-list,
+.academic-list,
+.frequency-list,
+.objectives-list,
+.strategies-list,
+.resources-list,
+.teacher-list,
+.family-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 5px 0;
+    font-size: 1rem;
+    color: #34495E;
+  }
+}
+
+.closing-quote {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-red);
+  text-align: center;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: #2C3E50;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #E0E0E0;
+    border-radius: 10px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    background: white;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  select {
+    cursor: pointer;
+  }
+
+  input[type="radio"] {
+    margin-right: 5px;
+  }
+
+  label {
+    display: inline-block;
+    margin-right: 15px;
+    cursor: pointer;
+  }
+}
+
+.textarea-container {
+  position: relative;
+
+  textarea {
+    padding-right: 50px; // Space for the button
+  }
+
+  .mic-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background: var(--primary-red);
+    }
+
+    &:active {
+      background: var(--primary-red);
+    }
+  }
+}
+
+.emotion-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #E0E0E0;
+  }
+
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #2C3E50;
+  }
+
+  td {
+    label {
+      margin-right: 10px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .welcome-title {
+    font-size: 2rem;
+  }
+
+  .report-content {
+    padding: 20px;
+  }
+
+  .report-title {
+    font-size: 1.3rem;
+  }
+
+  .subsection-title {
+    font-size: 1.1rem;
+  }
+
+  .data-list li,
+  .status-list li,
+  .recommendations-list li,
+  .evaluation-list li,
+  .context-list li,
+  .academic-list li,
+  .frequency-list li,
+  .objectives-list li,
+  .strategies-list li,
+  .resources-list li,
+  .teacher-list li,
+  .family-list li {
+    font-size: 0.9rem;
+  }
+
+  .closing-quote {
+    font-size: 1rem;
+  }
+
+  .form-group {
+    label {
+      font-size: 0.9rem;
+    }
+
+    input, select, textarea {
+      font-size: 0.85rem;
+      padding: 8px;
+    }
+
+    input[type="radio"] {
+      margin-right: 3px;
+    }
+
+    label {
+      margin-right: 10px;
+      font-size: 0.85rem;
+    }
+  }
+
+  .emotion-table {
+    th, td {
+      padding: 8px;
+      font-size: 0.85rem;
+    }
+
+    td label {
+      margin-right: 5px;
+    }
+  }
+
+  .textarea-container {
+    .mic-btn {
+      width: 25px;
+      height: 25px;
+      font-size: 12px;
+      right: 8px;
+      top: 8px;
+    }
+
+    textarea {
+      padding-right: 40px;
+    }
+  }
+}

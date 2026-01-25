@@ -1,0 +1,77 @@
+<div class="zona-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="section-header">
+    <div class="header-left">
+      <span class="gear-icon">⚙️</span>
+      <a routerLink="/zona-profesional" class="home-link">← Volver</a>
+    </div>
+    <div class="header-center">
+      <h1 class="section-title">Historia Clinica</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">Usuario</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+   <div class="welcome-section">
+     <h2 class="welcome-title">
+       Gestión de Historias Clínicas
+       <span class="title-star">⭐</span>
+     </h2>
+     <p class="welcome-subtitle">Administra y consulta las historias clínicas de tus pacientes de manera eficiente</p>
+
+     <!-- Botón Nueva Historia y Buscador -->
+     <div class="actions-section">
+       <button class="btn-nueva-historia" routerLink="/nueva-historia-clinica">+ Nueva Historia Clínica</button>
+       <div class="search-container">
+         <input type="text" placeholder="Buscar por nombre del paciente..." class="search-input" [(ngModel)]="searchTerm" (input)="filterHistorias()">
+         <span class="search-icon">🔍</span>
+       </div>
+     </div>
+   </div>
+
+   <div class="historia-section">
+     <h2 class="subsection-title">Historias Clínicas {{ searchTerm ? '(Filtradas)' : 'Recientes' }}</h2>
+
+     <div class="historia-list">
+       <div class="historia-card" *ngFor="let historia of filteredHistorias">
+         <div class="historia-header">
+           <h3 class="paciente-nombre">{{ historia.pacienteNombre }}</h3>
+           <span class="historia-fecha">{{ historia.fecha }}</span>
+         </div>
+         <div class="historia-content">
+           <p class="historia-resumen">{{ historia.resumen }}</p>
+           <div class="historia-tags">
+             <span class="tag" *ngFor="let tag of historia.tags">{{ tag }}</span>
+           </div>
+           <div class="historia-sesiones" *ngIf="historia.tieneSesiones">
+             <div class="sesiones-info">
+               <span class="sesiones-count">📅 {{ historia.numSesiones }} sesión{{ historia.numSesiones > 1 ? 'es' : '' }}</span>
+               <div class="ultima-sesion" *ngIf="historia.ultimaSesion">
+                 <small>Última: {{ historia.ultimaSesion.fecha | date:'dd/MM/yyyy' }} - {{ historia.ultimaSesion.tipo }}</small>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="historia-actions">
+           <button class="btn-ver" (click)="verDetalles(historia)">Ver Detalles</button>
+           <button class="btn-editar" (click)="editar(historia)">Editar</button>
+         </div>
+       </div>
+     </div>
+   </div>
+
+  </main>
+</div>

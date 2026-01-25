@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-blue: #4A90E2;
+  --primary-green: #50C878;
+  --primary-orange: #FF8C42;
+  --primary-purple: #9B59B6;
+  --primary-yellow: #FFD93D;
+  --primary-red: #E74C3C;
+  --sky-blue: #87CEEB;
+  --light-blue: #B0E0E6;
+  --white: #FFFFFF;
+  --dark-blue: #2C3E50;
+  --text-dark: #34495E;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(180deg, var(--sky-blue) 0%, var(--light-blue) 100%);
+  min-height: 100vh;
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+// Animaciones de fondo
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes drift {
+  0% { transform: translateX(0px); }
+  100% { transform: translateX(100px); }
+}
+
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  opacity: 0.8;
+  animation: drift 20s infinite linear;
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+  }
+  
+  &::before {
+    width: 50px;
+    height: 50px;
+    top: -25px;
+    left: 10px;
+  }
+  
+  &::after {
+    width: 60px;
+    height: 60px;
+    top: -35px;
+    right: 10px;
+  }
+}
+
+.star {
+  position: absolute;
+  color: var(--primary-yellow);
+  font-size: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow);
+  }
+  
+  &.btn-primary {
+    background: var(--primary-blue);
+    color: white;
+  }
+  
+  &.btn-secondary {
+    background: var(--primary-green);
+    color: white;
+  }
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 15px var(--shadow);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow);
+  }
+}
+
+.input-group {
+  margin-bottom: 20px;
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #E0E0E0;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+    }
+  }
+}
+

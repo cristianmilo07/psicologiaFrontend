@@ -1,0 +1,69 @@
+<div class="zona-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="section-header">
+    <div class="header-left">
+      <span class="star-icon">⭐</span>
+      <a routerLink="/dashboard" class="back-link">Home</a>
+    </div>
+    <div class="header-center">
+      <h1 class="section-title">Zona Padres</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">Usuario</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="section-content">
+    <div class="welcome-section">
+      <h2 class="subsection-title">Bienvenido a tu Zona</h2>
+      <p class="welcome-text">Aquí encontrarás recursos y herramientas para apoyar el desarrollo emocional de tu hijo</p>
+    </div>
+
+    <div class="parent-cards">
+      <div class="parent-card">
+        <img src="assets/images/recursos.png" alt="Recursos" class="parent-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div class="card-icon fallback" style="display: none;">📚</div>
+        <h3 class="card-title">Recursos Educativos</h3>
+        <p class="card-description">Artículos y guías sobre desarrollo infantil</p>
+      </div>
+
+      <div class="parent-card">
+        <img src="assets/images/comunidad.png" alt="Comunidad" class="parent-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div class="card-icon fallback" style="display: none;">💬</div>
+        <h3 class="card-title">Comunidad</h3>
+        <p class="card-description">Conecta con otros padres</p>
+      </div>
+
+      <div class="parent-card">
+        <img src="assets/images/seguimiento.png" alt="Seguimiento" class="parent-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div class="card-icon fallback" style="display: none;">📊</div>
+        <h3 class="card-title">Seguimiento</h3>
+        <p class="card-description">Monitorea el progreso de tu hijo</p>
+      </div>
+
+      <div class="parent-card">
+        <img src="assets/images/citas.png" alt="Citas" class="parent-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div class="card-icon fallback" style="display: none;">📅</div>
+        <h3 class="card-title">Citas</h3>
+        <p class="card-description">Gestiona las sesiones con el psicólogo</p>
+      </div>
+    </div>
+
+    <div class="calendar-section">
+      <h2 class="subsection-title">Agendar Cita</h2>
+      <app-calendario (appointmentScheduled)="onAppointmentScheduled($event)"></app-calendario>
+    </div>
+  </main>
+</div>
+

@@ -1,0 +1,95 @@
+<div class="register-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+    <div class="star star-3">⭐</div>
+  </div>
+
+  <div class="register-card">
+    <div class="logo-section">
+      <h1 class="logo">- ARENYS CONTIGO -</h1>
+      <p class="subtitle">Crea tu cuenta y comienza tu viaje</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="register-form">
+      <div class="input-group">
+        <label for="name">Nombre completo</label>
+        <input
+          type="text"
+          id="name"
+          [(ngModel)]="name"
+          name="name"
+          placeholder="Tu nombre"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="tu@email.com"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="role">Rol</label>
+        <select
+          id="role"
+          [(ngModel)]="role"
+          name="role"
+          required
+        >
+          <option value="child">Niño</option>
+          <option value="parent">Padre</option>
+          <option value="professional">Profesional</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        {{ loading ? 'Registrando...' : 'Registrarse' }}
+      </button>
+
+      <div class="login-link">
+        <p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
+      </div>
+    </form>
+  </div>
+</div>
+

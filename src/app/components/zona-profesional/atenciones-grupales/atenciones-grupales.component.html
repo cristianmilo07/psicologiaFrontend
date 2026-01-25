@@ -1,0 +1,157 @@
+<div class="zona-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="section-header">
+    <div class="header-left">
+      <span class="star-icon"><img src="assets/images/logoCarolinaPsicologa.png" alt="Logo Carolina Psicóloga" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></span>
+      <a routerLink="/zona-profesional" class="back-link">← Volver</a>
+    </div>
+    <div class="header-center">
+      <h1 class="section-title">Atenciones Grupales</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">Usuario</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="welcome-section">
+      <h2 class="welcome-title">
+        Atenciones Grupales – Psicología Escolar
+        <span class="title-star">⭐</span>
+      </h2>
+      <p class="welcome-subtitle">Las atenciones grupales fortalecen el bienestar emocional y la convivencia escolar.</p>
+      <div class="month-selector">
+        <label for="mes">Mes:</label>
+        <select id="mes" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
+          <option *ngFor="let mes of meses" [value]="mes.value">{{ mes.label }}</option>
+        </select>
+        <button class="add-button" (click)="toggleForm()">+ Agregar Atención</button>
+        <button class="pdf-button" (click)="descargarPDF()" *ngIf="!loading && atenciones.length > 0">📄 Exportar PDF</button>
+      </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" *ngIf="showForm" (click)="toggleForm()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>⭐ Registrar Nueva Atención Grupal</h3>
+          <button class="close-button" (click)="toggleForm()">×</button>
+        </div>
+        <form class="atencion-form" (ngSubmit)="guardarAtencion()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="grado">🎓 Grado:</label>
+              <select id="grado" [(ngModel)]="nuevaAtencion.grado" name="grado" required>
+                <option *ngFor="let grado of grados" [value]="grado">{{ grado }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fecha">📅 Fecha:</label>
+              <input type="date" id="fecha" [(ngModel)]="nuevaAtencion.fecha" name="fecha" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tema">🎯 Tema:</label>
+              <input type="text" id="tema" [(ngModel)]="nuevaAtencion.tema" name="tema" placeholder="Tema de la sesión" required>
+            </div>
+            <div class="form-group">
+              <label for="numeroParticipantes">👥 Número de Participantes:</label>
+              <input type="number" id="numeroParticipantes" [(ngModel)]="nuevaAtencion.numeroParticipantes" name="numeroParticipantes" min="1" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="objetivos">🎯 Objetivos:</label>
+            <textarea id="objetivos" [(ngModel)]="nuevaAtencion.objetivos" name="objetivos" placeholder="Objetivos de la sesión" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="actividades">🎮 Actividades:</label>
+            <textarea id="actividades" [(ngModel)]="nuevaAtencion.actividades" name="actividades" placeholder="Actividades realizadas" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="observaciones">📝 Observaciones:</label>
+            <textarea id="observaciones" [(ngModel)]="nuevaAtencion.observaciones" name="observaciones" placeholder="Observaciones adicionales" rows="3"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="save-button">💾 Guardar Atención</button>
+            <button type="button" class="cancel-button" (click)="toggleForm()">❌ Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="summary-section" *ngIf="!loading">
+      <div class="summary-cards" *ngIf="atencionesPorGrado.length > 0; else noData">
+        <div class="summary-card" *ngFor="let grado of atencionesPorGrado">
+          <h3>{{ grado.grado }}</h3>
+          <p>Se realizaron {{ grado.total }} atenciones grupales</p>
+          <p>📅 Días: {{ grado.dias.join(', ') }}</p>
+        </div>
+      </div>
+      <ng-template #noData>
+        <div class="no-data-message">
+          <p>No hay atenciones grupales registradas para este mes.</p>
+          <p>¡Agrega la primera sesión grupal!</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="loading-section" *ngIf="loading">
+      <p>Cargando atenciones...</p>
+    </div>
+
+    <div class="chart-section" *ngIf="!loading && atencionesPorGrado.length > 0">
+      <h3>Gráfica de Atenciones Grupales</h3>
+      <div class="chart-container">
+        <div class="bar-chart">
+          <div class="bar" *ngFor="let grado of atencionesPorGrado; let i = index">
+            <div class="bar-label">{{ grado.grado }}</div>
+            <div class="bar-visual" [style.width.%]="maxAtenciones > 0 ? (grado.total / maxAtenciones) * 100 : 0">
+              <span class="bar-value">{{ grado.total }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-section" *ngIf="!loading && atencionesPorGrado.length > 0">
+      <h3>Detalle por Grado</h3>
+      <div class="grade-details">
+        <div class="grade-card" *ngFor="let grado of atencionesPorGrado">
+          <div class="grade-header" (click)="toggleDetails(grado)">
+            <h4>{{ grado.grado }}</h4>
+            <span class="toggle-icon">{{ grado.expanded ? '▼' : '▶' }}</span>
+          </div>
+          <div class="grade-content" *ngIf="grado.expanded">
+            <div class="session-item" *ngFor="let dia of grado.dias; let i = index">
+              <p>📅 {{ dia }} de {{ selectedMonthLabel }} – {{ getAtencionDetails(grado.grado, dia) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="notification-modal" *ngIf="showNotification" [ngClass]="notificationType">
+      <div class="notification-content">
+        <div class="notification-icon">
+          <span *ngIf="notificationType === 'success'">✅</span>
+          <span *ngIf="notificationType === 'error'">❌</span>
+        </div>
+        <div class="notification-message">{{ notificationMessage }}</div>
+        <button class="notification-close" (click)="closeNotification()">×</button>
+      </div>
+    </div>
+  </main>
+</div>

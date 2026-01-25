@@ -1,0 +1,157 @@
+<div class="detalle-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="main-header">
+    <div class="header-left">
+      <span class="star-icon">⭐</span>
+      <a routerLink="/historia-clinica" class="home-link">← Volver</a>
+    </div>
+    <div class="header-center">
+      <h1 class="main-logo">Detalle Historia Clínica</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">{{ authService.getCurrentUser()?.name || 'Usuario' }}</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="loading" *ngIf="loading">
+      <p>Cargando historia clínica...</p>
+    </div>
+
+    <div class="historia-detalle" *ngIf="!loading && historia">
+      <div class="detalle-header">
+        <h2>{{ historia.nombrePaciente }}</h2>
+        <span class="fecha-creacion">Creada: {{ historia.createdAt | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      <div class="detalle-grid">
+        <!-- Información Personal -->
+        <div class="detalle-section">
+          <h3>Información Personal</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Fecha de Nacimiento:</label>
+              <span>{{ historia.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="info-item">
+              <label>Género:</label>
+              <span>{{ historia.genero }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.direccion">
+              <label>Dirección:</label>
+              <span>{{ historia.direccion }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.telefono">
+              <label>Teléfono:</label>
+              <span>{{ historia.telefono }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.email">
+              <label>Email:</label>
+              <span>{{ historia.email }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información Familiar -->
+        <div class="detalle-section">
+          <h3>Información Familiar</h3>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="historia.nombrePadre">
+              <label>Nombre del Padre:</label>
+              <span>{{ historia.nombrePadre }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.nombreMadre">
+              <label>Nombre de la Madre:</label>
+              <span>{{ historia.nombreMadre }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.nombreAcudiente">
+              <label>Nombre del Acudiente:</label>
+              <span>{{ historia.nombreAcudiente }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.parentescoAcudiente">
+              <label>Parentesco del Acudiente:</label>
+              <span>{{ historia.parentescoAcudiente }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.tieneHermanosColegio">
+              <label>Hermanos/as en el colegio:</label>
+              <span>{{ historia.tieneHermanosColegio === 'si' ? 'Sí' : 'No' }}</span>
+            </div>
+            <div class="info-item" *ngIf="historia.gradoHermano">
+              <label>Grado del hermano/a:</label>
+              <span>{{ historia.gradoHermano }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información Médica -->
+        <div class="detalle-section">
+          <h3>Información Médica</h3>
+          <div class="info-grid">
+            <div class="info-item full-width">
+              <label>Motivo de Consulta:</label>
+              <span>{{ historia.motivoConsulta }}</span>
+            </div>
+            <div class="info-item full-width" *ngIf="historia.antecedentesMedicos">
+              <label>Antecedentes Médicos:</label>
+              <span>{{ historia.antecedentesMedicos }}</span>
+            </div>
+            <div class="info-item full-width">
+              <label>Síntomas Actuales:</label>
+              <span>{{ historia.sintomasActuales }}</span>
+            </div>
+            <div class="info-item full-width" *ngIf="historia.diagnostico">
+              <label>Diagnóstico:</label>
+              <span>{{ historia.diagnostico }}</span>
+            </div>
+            <div class="info-item full-width" *ngIf="historia.planTratamiento">
+              <label>Plan de Tratamiento:</label>
+              <span>{{ historia.planTratamiento }}</span>
+            </div>
+            <div class="info-item full-width" *ngIf="historia.notas">
+              <label>Notas Adicionales:</label>
+              <span>{{ historia.notas }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sesiones -->
+        <div class="detalle-section" *ngIf="historia.sesiones && historia.sesiones.length > 0">
+          <h3>Sesiones de Terapia</h3>
+          <div class="sesiones-list">
+            <div class="sesion-card" *ngFor="let sesion of historia.sesiones; let i = index">
+              <div class="sesion-header">
+                <h4>Sesión {{ i + 1 }} - {{ sesion.tipo }}</h4>
+                <span class="sesion-fecha">{{ sesion.fecha | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="sesion-content">
+                <p><strong>Notas:</strong> {{ sesion.notas }}</p>
+                <p *ngIf="sesion.objetivos"><strong>Objetivos:</strong> {{ sesion.objetivos }}</p>
+                <p *ngIf="sesion.progreso"><strong>Progreso:</strong> {{ sesion.progreso }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acciones">
+        <button class="btn-volver" (click)="volver()">Volver a Historias</button>
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="!loading && !historia">
+      <p>No se pudo cargar la historia clínica.</p>
+      <button class="btn-volver" (click)="volver()">Volver</button>
+    </div>
+  </main>
+</div>
