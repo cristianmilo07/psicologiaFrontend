@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 })
 export class HistoriasService {
 
-  private apiUrl = 'http://localhost:3000/api/historias';
+  private apiUrl = 'https://psicologiabackend.onrender.com/api/historias';
 
   constructor(
     private http: HttpClient,
