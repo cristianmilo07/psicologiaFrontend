@@ -15,7 +15,6 @@ import { AuthService } from '../../services/auth.service';
 export class NuevaHistoriaClinicaComponent {
   user: any = null;
   historiaClinicaForm: FormGroup;
-  showModal: boolean = false;
   showSuccessModal: boolean = false;
   selectedFiles: File[] = [];
   recognition: any;
@@ -81,10 +80,6 @@ export class NuevaHistoriaClinicaComponent {
     this.authService.logout();
   }
 
-  closeModalAndLogout() {
-    this.showModal = false;
-    this.logout();
-  }
 
   get sesiones(): FormArray {
     return this.historiaClinicaForm.get('sesiones') as FormArray;
@@ -143,11 +138,11 @@ export class NuevaHistoriaClinicaComponent {
 
   onSubmit() {
     if (this.historiaClinicaForm.valid) {
-      const token = this.authService.getToken();
-      if (!token) {
-        alert('No estás autenticado');
+      if (!this.authService.isAuthenticated()) {
+        this.authService.logout();
         return;
       }
+      const token = this.authService.getToken();
 
       const formData = new FormData();
       const formValue = this.historiaClinicaForm.value;
@@ -186,11 +181,7 @@ export class NuevaHistoriaClinicaComponent {
           },
           error: (error) => {
             console.error('Error al crear historia clínica:', error);
-            if (error.status === 401) {
-              this.showModal = true;
-            } else {
-              alert('Error al crear la historia clínica: ' + (error.error?.message || 'Error desconocido'));
-            }
+            alert('Error al crear la historia clínica: ' + (error.error?.message || 'Error desconocido'));
           }
         });
     } else {

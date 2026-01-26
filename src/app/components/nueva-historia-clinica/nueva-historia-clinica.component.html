@@ -217,14 +217,6 @@
     </div>
   </main>
 
-  <!-- Modal de sesión expirada -->
-  <div *ngIf="showModal" class="modal-overlay">
-    <div class="modal-content">
-      <h2>Sesión Expirada</h2>
-      <p>Por favor, vuelve a abrir sesión porque el tiempo se ha cerrado.</p>
-      <button class="btn-accept" (click)="closeModalAndLogout()">Aceptar</button>
-    </div>
-  </div>
 
   <!-- Modal de éxito -->
   <div *ngIf="showSuccessModal" class="modal-overlay">

@@ -63,12 +63,7 @@ export class HistoriaClinicaComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al cargar historias clínicas:', error);
-          if (error.status === 401) {
-            alert('Sesión expirada. Por favor, inicia sesión nuevamente.');
-            this.authService.logout();
-          } else {
-            alert('Error al cargar las historias clínicas');
-          }
+          alert('Error al cargar las historias clínicas');
         }
       });
   }
@@ -124,12 +119,7 @@ export class HistoriaClinicaComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error al eliminar historia clínica:', error);
-            if (error.status === 401) {
-              alert('Sesión expirada. Por favor, inicia sesión nuevamente.');
-              this.authService.logout();
-            } else {
-              alert('Error al eliminar la historia clínica');
-            }
+            alert('Error al eliminar la historia clínica');
             this.showDeleteModal = false;
             this.historiaToDelete = null;
           }
