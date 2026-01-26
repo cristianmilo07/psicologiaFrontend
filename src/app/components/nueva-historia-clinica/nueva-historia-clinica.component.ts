@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { HistoriasService } from '../../services/historias.service';
 
 @Component({
   selector: 'app-nueva-historia-clinica',
@@ -24,7 +24,7 @@ export class NuevaHistoriaClinicaComponent {
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private http: HttpClient
+    private historiasService: HistoriasService
   ) {
     this.user = this.authService.getCurrentUser();
 
@@ -161,11 +161,7 @@ export class NuevaHistoriaClinicaComponent {
         formData.append('archivos', file);
       });
 
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      });
-
-      this.http.post('http://localhost:3000/api/historias', formData, { headers })
+      this.historiasService.createHistoria(formData)
         .subscribe({
           next: (response: any) => {
             this.showSuccessModal = true;
