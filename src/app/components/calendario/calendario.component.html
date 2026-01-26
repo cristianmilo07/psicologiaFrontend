@@ -39,26 +39,52 @@
               *ngFor="let date of getDaysInMonth()"
               [class.current-month]="isCurrentMonth(date)"
               [class.today]="isToday(date)"
-              [class.selected]="isSelected(date)"
               (click)="selectDate(date)">
-              {{ date.getDate() }}
+              <div class="day-number">{{ date.getDate() }}</div>
+              <div class="appointments" *ngIf="getAppointmentsForDate(date).length > 0">
+                <div class="appointment-item" *ngFor="let app of getAppointmentsForDate(date)">
+                  {{ app.time }} - {{ app.type === 'alumno' ? 'Alumno' : 'Acudiente' }} - {{ app.description }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-  
-        <div class="hours-section" *ngIf="selectedDate">
-          <h3>Horas Disponibles para {{ selectedDate | date:'dd/MM/yyyy' }}</h3>
-          <div class="hours-grid">
-            <button
-              class="hour-btn"
-              *ngFor="let hour of availableHours"
-              [class.selected]="selectedHour === hour"
-              (click)="selectHour(hour)">
-              {{ hour }}
-            </button>
-          </div>
-          <button class="btn-schedule" (click)="scheduleAppointment()" *ngIf="selectedHour">Agendar Cita</button>
-        </div>
       </div>
     </main>
+
+    <!-- Modal for adding appointment -->
+    <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h3>Agendar Cita para {{ selectedDateForModal | date:'dd/MM/yyyy' }}</h3>
+        <div class="existing-appointments" *ngIf="selectedDateForModal && getAppointmentsForDate(selectedDateForModal).length > 0">
+          <h4>Citas Existentes:</h4>
+          <ul>
+            <li *ngFor="let app of getAppointmentsForDate(selectedDateForModal)">
+              {{ app.time }} - {{ app.type === 'alumno' ? 'Alumno' : 'Acudiente' }} - {{ app.description }}
+            </li>
+          </ul>
+        </div>
+        <form (ngSubmit)="saveAppointment()">
+          <div class="form-group">
+            <label for="type">Tipo:</label>
+            <select id="type" [(ngModel)]="newAppointment.type" name="type" required>
+              <option value="alumno">Alumno</option>
+              <option value="acudiente">Acudiente</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="time">Hora:</label>
+            <input type="time" id="time" [(ngModel)]="newAppointment.time" name="time" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Descripción:</label>
+            <input type="text" id="description" [(ngModel)]="newAppointment.description" name="description" required>
+          </div>
+          <div class="modal-buttons">
+            <button type="submit" class="btn-save">Guardar</button>
+            <button type="button" class="btn-cancel" (click)="closeModal()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
