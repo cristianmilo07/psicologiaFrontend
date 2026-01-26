@@ -225,4 +225,13 @@
       <button class="btn-accept" (click)="closeModalAndLogout()">Aceptar</button>
     </div>
   </div>
+
+  <!-- Modal de éxito -->
+  <div *ngIf="showSuccessModal" class="modal-overlay">
+    <div class="modal-content success-modal">
+      <h2>¡Éxito!</h2>
+      <p>Psicóloga Carolina, lo has creado exitosamente.</p>
+      <button class="btn-accept" (click)="aceptarSuccess()">Aceptar</button>
+    </div>
+  </div>
 </div>

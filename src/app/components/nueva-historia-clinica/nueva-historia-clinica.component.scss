@@ -545,4 +545,14 @@
       box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
     }
   }
+
+  &.success-modal {
+    h2 {
+      color: var(--primary-green);
+    }
+
+    p {
+      font-weight: 600;
+    }
+  }
 }

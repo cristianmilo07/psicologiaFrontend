@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { HistoriasService } from '../../services/historias.service';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -16,11 +17,14 @@ export class HistoriaClinicaComponent implements OnInit {
   historiasClinicas: any[] = [];
   filteredHistorias: any[] = [];
   searchTerm: string = '';
+  showDeleteModal: boolean = false;
+  historiaToDelete: any = null;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private historiasService: HistoriasService
   ) {}
 
   ngOnInit() {
@@ -28,19 +32,7 @@ export class HistoriaClinicaComponent implements OnInit {
   }
 
   loadHistoriasClinicas() {
-    const token = this.authService.getToken();
-    if (!token) {
-      alert('No estás autenticado');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
-    this.http.get('https://psicologiabackend.onrender.com/api/historias', { headers })
+    this.historiasService.getHistorias()
       .subscribe({
         next: (response: any) => {
           this.historiasClinicas = response.map((historia: any) => {
@@ -113,5 +105,40 @@ export class HistoriaClinicaComponent implements OnInit {
 
   editar(historia: any) {
     this.router.navigate(['/editar-historia-clinica', historia.id]);
+  }
+
+  eliminar(historia: any) {
+    this.historiaToDelete = historia;
+    this.showDeleteModal = true;
+  }
+
+  confirmarEliminar() {
+    if (this.historiaToDelete) {
+      this.historiasService.deleteHistoria(this.historiaToDelete.id)
+        .subscribe({
+          next: (response: any) => {
+            alert('Historia clínica eliminada exitosamente');
+            this.loadHistoriasClinicas(); // Recargar la lista
+            this.showDeleteModal = false;
+            this.historiaToDelete = null;
+          },
+          error: (error) => {
+            console.error('Error al eliminar historia clínica:', error);
+            if (error.status === 401) {
+              alert('Sesión expirada. Por favor, inicia sesión nuevamente.');
+              this.authService.logout();
+            } else {
+              alert('Error al eliminar la historia clínica');
+            }
+            this.showDeleteModal = false;
+            this.historiaToDelete = null;
+          }
+        });
+    }
+  }
+
+  cancelarEliminar() {
+    this.showDeleteModal = false;
+    this.historiaToDelete = null;
   }
 }

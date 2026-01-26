@@ -68,10 +68,22 @@
          <div class="historia-actions">
            <button class="btn-ver" (click)="verDetalles(historia)">Ver Detalles</button>
            <button class="btn-editar" (click)="editar(historia)">Editar</button>
+           <button class="btn-eliminar" (click)="eliminar(historia)">Eliminar</button>
          </div>
        </div>
      </div>
    </div>
 
   </main>
+
+  <!-- Modal de confirmación -->
+  <div class="modal-overlay" *ngIf="showDeleteModal">
+    <div class="modal-content">
+      <p class="modal-message">¿Estás segura Psicóloga Carolina de eliminar esta historia clínica?</p>
+      <div class="modal-buttons">
+        <button class="btn-si" (click)="confirmarEliminar()">Sí</button>
+        <button class="btn-no" (click)="cancelarEliminar()">No</button>
+      </div>
+    </div>
+  </div>
 </div>
