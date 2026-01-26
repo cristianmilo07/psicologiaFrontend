@@ -30,8 +30,11 @@ export class AuthService {
   constructor() {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
-    if (token && user) {
+    if (token && user && !this.isTokenExpired(token)) {
       this.currentUserSubject.next(JSON.parse(user));
+    } else if (token) {
+      // Token exists but expired, clear it
+      this.logout();
     }
   }
 
@@ -57,7 +60,19 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+    return !this.isTokenExpired(token);
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const exp = payload.exp * 1000; // Convert to milliseconds
+      return Date.now() > exp;
+    } catch (e) {
+      return true; // If can't decode, consider expired
+    }
   }
 
   getToken(): string | null {
