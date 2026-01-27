@@ -80,7 +80,11 @@ export const routes: Routes = [
     path: 'atenciones-grupales',
     loadComponent: () => import('./components/zona-profesional/atenciones-grupales/atenciones-grupales.component').then(m => m.AtencionesGrupalesComponent),
     canActivate: [AuthGuard, RoleGuard(['professional', 'admin'])]
+  },
+  {
+    path: 'estudiantes',
+    loadComponent: () => import('./components/estudiantes/estudiantes.component').then(m => m.EstudiantesComponent)
   }
-  
+
 ];
 

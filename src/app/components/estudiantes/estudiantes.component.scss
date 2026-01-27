@@ -1,0 +1,238 @@
+// Variables de colores
+$primary-bg: #6fc0e1; // Celeste claro
+$container-bg: #FFFFFF; // Blanco
+$text-dark: #2C3E50; // Azul oscuro
+$text-bright: #6fc0e1; // Azul brillante
+$border-color: #BDC3C7; // Gris claro
+$shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+$border-radius: 20px;
+
+// Importar fuente amigable
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  color: $text-dark;
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+
+  h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: $text-dark;
+    font-weight: 700;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: $text-dark;
+  }
+
+  .page {
+    padding: 30px;
+    border-radius: $border-radius;
+    margin-bottom: 20px;
+
+    h2 {
+      text-align: center;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      color: $text-dark;
+      font-weight: 600;
+    }
+
+    .question {
+      margin-bottom: 25px;
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+        color: $text-bright;
+      }
+
+      .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 15px;
+        justify-content: center;
+
+        button {
+          padding: 15px 25px;
+          border: none;
+          border-radius: 50px; // Botones tipo píldora
+          cursor: pointer;
+          font-size: 1em;
+          transition: all 0.3s ease;
+          background: #FFD700; // Amarillo vibrante
+          color: $text-dark;
+          border: 2px solid transparent;
+          font-weight: 600;
+          min-width: 120px;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          }
+
+          &.selected {
+            background: #3498DB; // Azul brillante cuando seleccionado
+            color: white;
+            border-color: #2980B9;
+          }
+
+          // Colores específicos para clima emocional
+          &:nth-child(1) { background: #FFD700; } // Soleado - Amarillo
+          &:nth-child(2) { background: #95A5A6; } // Nublado - Gris
+          &:nth-child(3) { background: #E74C3C; } // Tormentoso - Rojo
+          &:nth-child(4) { background: #9B59B6; } // Lluvioso - Morado
+
+          &:nth-child(1).selected { background: #F39C12; }
+          &:nth-child(2).selected { background: #7F8C8D; }
+          &:nth-child(3).selected { background: #C0392B; }
+          &:nth-child(4).selected { background: #8E44AD; }
+        }
+      }
+
+      input[type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 12px;
+        border-radius: 6px;
+        background: linear-gradient(to right, #FF6B6B, #4ECDC4, #45B7D1);
+        outline: none;
+        margin-bottom: 10px;
+
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: #FFD700;
+          cursor: pointer;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        &::-moz-range-thumb {
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: #FFD700;
+          cursor: pointer;
+          border: none;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid $border-color;
+        border-radius: 15px;
+        background: $container-bg;
+        color: $text-dark;
+        font-size: 1em;
+        resize: vertical;
+        min-height: 100px;
+        font-family: 'Nunito', sans-serif;
+
+        &::placeholder {
+          color: #7F8C8D;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $text-bright;
+        }
+      }
+    }
+
+    .gif {
+      display: block;
+      margin: 20px auto;
+      max-width: 200px;
+      border-radius: 15px;
+    }
+
+    .next-btn, .prev-btn, .submit-btn {
+      margin: 10px;
+      font-weight: 600;
+      padding: 15px 30px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .next-btn {
+      background: linear-gradient(45deg, #FF6B6B, #FFA500);
+      color: white;
+    }
+
+    .prev-btn {
+      background: linear-gradient(45deg, #4ECDC4, #44A08D);
+      color: white;
+    }
+
+    .submit-btn {
+      background: linear-gradient(45deg, #FFD700, #FFED4E);
+      color: $text-dark;
+      font-size: 1.2em;
+    }
+  }
+
+  .thank-you {
+    text-align: center;
+    padding: 40px;
+    background: $container-bg;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+
+    h2 {
+      color: $text-bright;
+      font-size: 2em;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: $text-dark;
+    }
+  }
+}
+
+// Responsivo
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    max-width: 100%;
+
+    .page {
+      padding: 20px;
+
+      .options {
+        button {
+          min-width: 100px;
+          padding: 12px 20px;
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+}

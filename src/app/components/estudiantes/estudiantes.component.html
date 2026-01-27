@@ -1,0 +1,134 @@
+<div class="container">
+  <h1>¡Hola Estudiante! 🌟</h1>
+  <p>Responde estas preguntas de forma anónima. ¡Toma tu tiempo!</p>
+
+  <!-- Page 1: Clima Emocional -->
+  <div *ngIf="currentPage === 1" class="page">
+    <h2>Nivel 1: Clima Emocional</h2>
+    <div class="question">
+      <label>Si hoy fueras un clima, ¿cómo estarías?</label>
+      <div class="options">
+        <button (click)="selectOption('clima', 'soleado')" [class.selected]="formData.clima === 'soleado'">☀️ Soleado y feliz</button>
+        <button (click)="selectOption('clima', 'nublado')" [class.selected]="formData.clima === 'nublado'">☁️ Nublado y pensativo</button>
+        <button (click)="selectOption('clima', 'tormentoso')" [class.selected]="formData.clima === 'tormentoso'">⛈️ Tormentoso/Enojado</button>
+        <button (click)="selectOption('clima', 'lluvioso')" [class.selected]="formData.clima === 'lluvioso'">🌧️ Lluvioso/Triste</button>
+      </div>
+    </div>
+    <div class="question">
+      <label>Usa un emoji para describir tu semana:</label>
+      <div class="options">
+        <button (click)="selectOption('emoji', 'rocket')" [class.selected]="formData.emoji === 'rocket'">🚀</button>
+        <button (click)="selectOption('emoji', 'dizzy')" [class.selected]="formData.emoji === 'dizzy'">😵‍💫</button>
+        <button (click)="selectOption('emoji', 'sleepy')" [class.selected]="formData.emoji === 'sleepy'">😴</button>
+        <button (click)="selectOption('emoji', 'rainbow')" [class.selected]="formData.emoji === 'rainbow'">🌈</button>
+        <button (click)="selectOption('emoji', 'brick')" [class.selected]="formData.emoji === 'brick'">🧱</button>
+      </div>
+    </div>
+    <img src="https://media.giphy.com/media/3o7TKz9bX9Z9Z9Z9Z9/giphy.gif" alt="Fun GIF" class="gif">
+    <button class="next-btn" (click)="nextPage()">¡Siguiente Nivel! 🚀</button>
+  </div>
+
+  <!-- Page 2: Vida Escolar -->
+  <div *ngIf="currentPage === 2" class="page">
+    <h2>Nivel 2: Vida Escolar</h2>
+    <div class="question">
+      <label>¿Qué tanto "lag" (retraso/pereza) sientes cuando entras al salón?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.lag" class="slider">
+      <span>{{ formData.lag }}/5</span>
+    </div>
+    <div class="question">
+      <label>¿Sientes que tus profes o compañeros te "dan luz" (te apoyan) o te "apagan"?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.apoyo" class="slider">
+      <span>{{ formData.apoyo }}/5</span>
+    </div>
+    <div class="question">
+      <label>En el descanso, ¿te sientes parte del grupo o como un espectador en las gradas?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.grupo" class="slider">
+      <span>{{ formData.grupo }}/5</span>
+    </div>
+    <div class="question">
+      <label>¿Hay alguna materia o situación que te haga sentir que se te acaba la batería rápido?</label>
+      <textarea [(ngModel)]="formData.bateria" placeholder="Describe..."></textarea>
+    </div>
+    <img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" alt="School GIF" class="gif">
+    <button class="prev-btn" (click)="prevPage()">⬅️ Anterior</button>
+    <button class="next-btn" (click)="nextPage()">¡Siguiente Nivel! 🚀</button>
+  </div>
+
+  <!-- Page 3: Mundo Interior -->
+  <div *ngIf="currentPage === 3" class="page">
+    <h2>Nivel 3: Mundo Interior</h2>
+    <div class="question">
+      <label>¿A veces sientes que tu cabeza tiene demasiadas pestañas abiertas al mismo tiempo?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.pestanas" class="slider">
+      <span>{{ formData.pestanas }}/5</span>
+    </div>
+    <div class="question">
+      <label>¿Has sentido que necesitas "desaparecer" un ratico de todo el mundo?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.desaparecer" class="slider">
+      <span>{{ formData.desaparecer }}/5</span>
+    </div>
+    <div class="question">
+      <label>¿Qué tan seguido sientes que "no encajas" en el rompecabezas de tu grupo?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.encajar" class="slider">
+      <span>{{ formData.encajar }}/5</span>
+    </div>
+    <div class="question">
+      <label>Cuando algo te sale mal, ¿eres tu mejor amigo o tu peor crítico?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.critico" class="slider">
+      <span>{{ formData.critico }}/5</span>
+    </div>
+    <div class="question">
+      <label>¿Has tenido algún "nudo en la garganta" que no has podido soltar esta semana?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.nudo" class="slider">
+      <span>{{ formData.nudo }}/5</span>
+    </div>
+    <img src="https://media.giphy.com/media/3o7TKz9bX9Z9Z9Z9Z9/giphy.gif" alt="Thinking GIF" class="gif">
+    <button class="prev-btn" (click)="prevPage()">⬅️ Anterior</button>
+    <button class="next-btn" (click)="nextPage()">¡Siguiente Nivel! 🚀</button>
+  </div>
+
+  <!-- Page 4: Red de Apoyo y Futuro -->
+  <div *ngIf="currentPage === 4" class="page">
+    <h2>Nivel 4: Red de Apoyo y Futuro</h2>
+    <div class="question">
+      <label>Si tuvieras un problema grave a las 2 a.m., ¿tienes a quién llamar sin miedo?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.llamar" class="slider">
+      <span>{{ formData.llamar }}/5</span>
+    </div>
+    <div class="question">
+      <label>Del 1 al 10, ¿qué tanto te asusta el "después del colegio"?</label>
+      <input type="range" min="1" max="10" [(ngModel)]="formData.asusta" class="slider">
+      <span>{{ formData.asusta }}/10</span>
+    </div>
+    <div class="question">
+      <label>¿Sientes que alguien realmente te escucha cuando hablas, o solo te oyen?</label>
+      <input type="range" min="1" max="5" [(ngModel)]="formData.escucha" class="slider">
+      <span>{{ formData.escucha }}/5</span>
+    </div>
+    <img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" alt="Support GIF" class="gif">
+    <button class="prev-btn" (click)="prevPage()">⬅️ Anterior</button>
+    <button class="next-btn" (click)="nextPage()">¡Último Nivel! 🚀</button>
+  </div>
+
+  <!-- Page 5: Caja de Secretos -->
+  <div *ngIf="currentPage === 5" class="page">
+    <h2>Nivel 5: La Caja de Secretos</h2>
+    <div class="question">
+      <label>Escribe una frase, una canción o un meme que resuma lo que sientes y que nadie más sabe.</label>
+      <textarea [(ngModel)]="formData.secreto" placeholder="Tu secreto aquí..."></textarea>
+    </div>
+    <div class="question">
+      <label>Si pudieras cambiar una sola cosa de tu día a día para ser más feliz, ¿qué sería?</label>
+      <textarea [(ngModel)]="formData.cambiar" placeholder="¿Qué cambiarías?"></textarea>
+    </div>
+    <img src="https://media.giphy.com/media/3o7TKz9bX9Z9Z9Z9Z9/giphy.gif" alt="Secret GIF" class="gif">
+    <button class="prev-btn" (click)="prevPage()">⬅️ Anterior</button>
+    <button class="submit-btn" (click)="submitForm()">¡Enviar Respuestas! 🎉</button>
+  </div>
+
+  <div *ngIf="submitted" class="thank-you">
+    <h2>¡Gracias por compartir! 🙏</h2>
+    <p>Tus respuestas son importantes para nosotros.</p>
+  </div>
+</div>

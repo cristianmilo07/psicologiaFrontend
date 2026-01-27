@@ -38,17 +38,17 @@
           <h2>Información del Paciente</h2>
           <div class="form-row">
             <div class="form-group">
-              <label for="nombrePaciente">Nombre del Paciente *</label>
+              <label for="nombrePaciente">Nombre del Paciente</label>
               <input type="text" id="nombrePaciente" formControlName="nombrePaciente" placeholder="Ingrese el nombre completo">
             </div>
             <div class="form-group">
-              <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+              <label for="fechaNacimiento">Fecha de Nacimiento</label>
               <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="genero">Género *</label>
+              <label for="genero">Género</label>
               <select id="genero" formControlName="genero">
                 <option value="">Seleccione</option>
                 <option value="masculino">Masculino</option>
@@ -71,21 +71,40 @@
           </div>
         </div>
 
-        <div class="form-section">
-          <h2>Información Familiar</h2>
+                  <div class="form-row">
+            <div class="form-group">
+              <label for="acompanamiento">Tipo de Acompañamiento</label>
+              <select id="acompanamiento" formControlName="acompanamiento" class="form-control">
+                <option value="">Seleccione una opción</option>
+                <option value="acompanamiento_padre">Acompañamiento familiar</option>
+                <option value="acompanante_estudiante">Acompañante a estudiante</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanamiento_padre'">
+            <h2>Descripción del Acompañamiento Familiar</h2>
+            <div class="form-group">
+              <label for="descripcionAcompanamientoPadre">Descripción</label>
+              <textarea id="descripcionAcompanamientoPadre" formControlName="descripcionAcompanamientoPadre" rows="4" placeholder="Describa el acompañamiento al padre"></textarea>
+            </div>
+          </div>
+          
+          <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
+            <h2>Información Familiar</h2>
           <div class="form-row">
             <div class="form-group">
-              <label for="nombrePadre">Nombre del Padre *</label>
+              <label for="nombrePadre">Nombre del Padre</label>
               <input type="text" id="nombrePadre" formControlName="nombrePadre" placeholder="Nombre completo del padre">
             </div>
             <div class="form-group">
-              <label for="nombreMadre">Nombre de la Madre *</label>
+              <label for="nombreMadre">Nombre de la Madre</label>
               <input type="text" id="nombreMadre" formControlName="nombreMadre" placeholder="Nombre completo de la madre">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="nombreAcudiente">Nombre del Acudiente *</label>
+              <label for="nombreAcudiente">Nombre del Acudiente</label>
               <input type="text" id="nombreAcudiente" formControlName="nombreAcudiente" placeholder="Nombre completo del acudiente">
             </div>
             <div class="form-group">
@@ -100,7 +119,7 @@
               </select>
             </div>
           </div>
-          <div class="form-row">
+          <div class="form-row" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
             <div class="form-group">
               <label for="tieneHermanosColegio">¿Tiene hermanos/as en el colegio?</label>
               <select id="tieneHermanosColegio" formControlName="tieneHermanosColegio">
@@ -116,10 +135,10 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Información Médica</h2>
           <div class="form-group">
-            <label for="motivoConsulta">Motivo de Consulta *</label>
+            <label for="motivoConsulta">Motivo de Consulta</label>
             <div class="textarea-container">
               <textarea id="motivoConsulta" formControlName="motivoConsulta" rows="3" placeholder="Describa el motivo de la consulta"></textarea>
               <button type="button" class="btn-mic" (click)="toggleSpeechRecognition('motivoConsulta')" [class.listening]="isListening">
@@ -132,12 +151,12 @@
             <textarea id="antecedentesMedicos" formControlName="antecedentesMedicos" rows="4" placeholder="Historial médico relevante, alergias, medicamentos, etc."></textarea>
           </div>
           <div class="form-group">
-            <label for="sintomasActuales">Síntomas Actuales *</label>
+            <label for="sintomasActuales">Síntomas Actuales</label>
             <textarea id="sintomasActuales" formControlName="sintomasActuales" rows="4" placeholder="Describa los síntomas actuales"></textarea>
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Diagnóstico y Tratamiento</h2>
           <div class="form-group">
             <label for="diagnostico">Diagnóstico</label>
@@ -152,7 +171,7 @@
             <textarea id="notas" formControlName="notas" rows="3" placeholder="Observaciones adicionales"></textarea>
           </div>
         </div>
-        <div class="form-section">
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>PIAR</h2>
           <div class="form-group">
             <label for="archivos">Archivos (Imágenes o PDFs)</label>
@@ -169,7 +188,7 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Sesiones de Terapia</h2>
           <button type="button" class="btn-add" (click)="agregarSesion()">Agregar Sesión</button>
           <div class="sesiones-list" formArrayName="sesiones">
@@ -180,11 +199,11 @@
               </div>
               <div class="form-row">
                 <div class="form-group">
-                  <label>Fecha *</label>
+                  <label>Fecha</label>
                   <input type="date" formControlName="fecha">
                 </div>
                 <div class="form-group">
-                  <label>Tipo de Sesión *</label>
+                  <label>Tipo de Sesión</label>
                   <select formControlName="tipo">
                     <option value="">Seleccione</option>
                     <option value="evaluacion">Evaluación Inicial</option>
@@ -195,7 +214,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label>Notas de la Sesión *</label>
+                <label>Notas de la Sesión</label>
                 <textarea formControlName="notas" rows="3" placeholder="Notas detalladas de la sesión"></textarea>
               </div>
               <div class="form-group">
@@ -211,12 +230,20 @@
         </div>
 
         <div class="form-actions">
-          <button type="submit" class="btn-submit" [disabled]="!historiaClinicaForm.valid">Crear Historia Clínica</button>
+          <button type="submit" class="btn-submit" [disabled]="!isAcompanamientoSelected">Crear Historia Clínica</button>
         </div>
       </form>
     </div>
   </main>
 
+  <!-- Modal de sesión expirada -->
+  <div *ngIf="showModal" class="modal-overlay">
+    <div class="modal-content">
+      <h2>Sesión Expirada</h2>
+      <p>Por favor, vuelve a abrir sesión porque el tiempo se ha cerrado.</p>
+      <button class="btn-accept" (click)="closeModalAndLogout()">Aceptar</button>
+    </div>
+  </div>
 
   <!-- Modal de éxito -->
   <div *ngIf="showSuccessModal" class="modal-overlay">
@@ -227,3 +254,4 @@
     </div>
   </div>
 </div>
+
