@@ -176,7 +176,7 @@ export class NuevaHistoriaClinicaComponent {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.post('http://localhost:3000/api/historias', formData, { headers })
+    this.http.post('https://psicologiabackend.onrender.com/api/historias', formData, { headers })
       .subscribe({
         next: (response: any) => {
           this.showSuccessModal = true;
