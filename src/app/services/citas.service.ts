@@ -17,7 +17,7 @@ export interface Cita {
   providedIn: 'root'
 })
 export class CitasService {
-  private apiUrl = 'http://localhost:3000/api/citas';
+  private apiUrl = 'https://psicologiabackend.onrender.com/api/citas';
 
   constructor(private http: HttpClient) { }
 
