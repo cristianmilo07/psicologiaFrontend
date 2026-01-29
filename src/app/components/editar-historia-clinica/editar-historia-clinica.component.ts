@@ -80,7 +80,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       'Content-Type': 'application/json'
     });
 
-    this.http.get(`http://localhost:3000/api/historias/${id}`, { headers })
+    this.http.get(`https://psicologiabackend.onrender.com/api/historias/${id}`, { headers })
       .subscribe({
         next: (response: any) => {
           this.originalHistoriaData = { ...response };
@@ -292,7 +292,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.put(`http://localhost:3000/api/historias/${this.historiaId}`, formData, { headers })
+    this.http.put(`https://psicologiabackend.onrender.com/api/historias/${this.historiaId}`, formData, { headers })
       .subscribe({
         next: (response: any) => {
           console.log('Historia clínica actualizada:', response);
