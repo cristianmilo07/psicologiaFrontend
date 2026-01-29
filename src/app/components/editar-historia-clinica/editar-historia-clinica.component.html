@@ -73,7 +73,16 @@
           </div>
         </div>
 
-        <div class="form-section">
+
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanamiento_padre'">
+          <h2>Descripción del Acompañamiento Familiar</h2>
+          <div class="form-group">
+            <label for="descripcionAcompanamientoPadre">Descripción</label>
+            <textarea id="descripcionAcompanamientoPadre" formControlName="descripcionAcompanamientoPadre" rows="4" placeholder="Describa el acompañamiento al padre"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Información Familiar</h2>
           <div class="form-row">
             <div class="form-group">
@@ -118,7 +127,7 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" >
           <h2>Información Médica</h2>
           <div class="form-group">
             <label for="motivoConsulta">Motivo de Consulta *</label>
@@ -134,7 +143,7 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" >
           <h2>Diagnóstico y Tratamiento</h2>
           <div class="form-group">
             <label for="diagnostico">Diagnóstico</label>
@@ -150,7 +159,7 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" >
           <h2>PIAR</h2>
           <div class="form-group">
             <label for="archivos">Archivos (Imágenes o PDFs)</label>
@@ -176,7 +185,7 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" >
           <h2>Sesiones de Terapia</h2>
           <button type="button" class="btn-add" (click)="agregarSesion()">Agregar Sesión</button>
           <div class="sesiones-list" formArrayName="sesiones">
@@ -219,7 +228,7 @@
 
         <div class="form-actions">
           <button type="button" class="btn-cancel" (click)="volver()">Cancelar</button>
-          <button type="submit" class="btn-submit" [disabled]="!historiaClinicaForm.valid">Actualizar Historia Clínica</button>
+          <button type="submit" class="btn-submit" [disabled]="!isAcompanamientoSelected">Actualizar Historia Clínica</button>
         </div>
       </form>
     </div>

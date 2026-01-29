@@ -63,8 +63,19 @@
           </div>
         </div>
 
+        <!-- Descripción del Acompañamiento Familiar -->
+        <div class="detalle-section" *ngIf="historia.acompanamiento === 'acompanamiento_padre'">
+          <h3>Descripción del Acompañamiento Familiar</h3>
+          <div class="info-grid">
+            <div class="info-item full-width">
+              <label>Descripción:</label>
+              <span>{{ historia.descripcionAcompanamientoPadre }}</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Información Familiar -->
-        <div class="detalle-section">
+        <div class="detalle-section" *ngIf="historia.acompanamiento === 'acompanante_estudiante'">
           <h3>Información Familiar</h3>
           <div class="info-grid">
             <div class="info-item" *ngIf="historia.nombrePadre">
@@ -126,7 +137,7 @@
         </div>
 
         <!-- Sesiones -->
-        <div class="detalle-section" *ngIf="historia.sesiones && historia.sesiones.length > 0">
+        <div class="detalle-section" *ngIf="historia.acompanamiento === 'acompanante_estudiante' && historia.sesiones && historia.sesiones.length > 0">
           <h3>Sesiones de Terapia</h3>
           <div class="sesiones-list">
             <div class="sesion-card" *ngFor="let sesion of historia.sesiones; let i = index">

@@ -70,7 +70,7 @@ export class CalendarioComponent implements OnInit {
   }
 
   getAppointmentsForDate(date: Date): Cita[] {
-    return this.appointments.filter(app => new Date(app.date).toDateString() === date.toDateString());
+    return this.appointments.filter(app => new Date(app.date).toDateString() === date.toDateString()).sort((a, b) => a.time.localeCompare(b.time));
   }
 
   loadAppointments() {

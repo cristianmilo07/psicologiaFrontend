@@ -38,7 +38,13 @@ export class HistoriaClinicaComponent implements OnInit {
           this.historiasClinicas = response.map((historia: any) => {
             const sesiones = historia.sesiones || [];
             const numSesiones = sesiones.length;
-            let resumenExtendido = historia.motivoConsulta || 'Sin resumen';
+            let resumenExtendido = '';
+
+            if (historia.acompanamiento === 'acompanamiento_padre') {
+              resumenExtendido = historia.descripcionAcompanamientoPadre || 'Sin descripción';
+            } else {
+              resumenExtendido = historia.motivoConsulta || 'Sin resumen';
+            }
 
             if (numSesiones > 0) {
               const ultimaSesion = sesiones[sesiones.length - 1];
@@ -63,7 +69,12 @@ export class HistoriaClinicaComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al cargar historias clínicas:', error);
-          alert('Error al cargar las historias clínicas');
+          if (error.status === 401) {
+            alert('Sesión expirada. Por favor, inicia sesión nuevamente.');
+            this.authService.logout();
+          } else {
+            alert('Error al cargar las historias clínicas');
+          }
         }
       });
   }
@@ -119,7 +130,12 @@ export class HistoriaClinicaComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error al eliminar historia clínica:', error);
-            alert('Error al eliminar la historia clínica');
+            if (error.status === 401) {
+              alert('Sesión expirada. Por favor, inicia sesión nuevamente.');
+              this.authService.logout();
+            } else {
+              alert('Error al eliminar la historia clínica');
+            }
             this.showDeleteModal = false;
             this.historiaToDelete = null;
           }
