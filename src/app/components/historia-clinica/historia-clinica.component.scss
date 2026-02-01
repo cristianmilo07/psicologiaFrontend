@@ -427,6 +427,13 @@
         color: #34495E;
         margin-bottom: 10px;
         line-height: 1.5;
+        
+        // Limitar texto a 3 líneas con puntos suspensivos
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .historia-tags {

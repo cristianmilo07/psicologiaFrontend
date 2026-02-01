@@ -73,6 +73,16 @@
           </div>
         </div>
 
+        <div class="form-row">
+          <div class="form-group">
+            <label for="acompanamiento">Tipo de Acompañamiento *</label>
+            <select id="acompanamiento" formControlName="acompanamiento" class="form-control">
+              <option value="">Seleccione una opción</option>
+              <option value="acompanamiento_padre">Acompañamiento familiar</option>
+              <option value="acompanante_estudiante">Acompañamiento al estudiante</option>
+            </select>
+          </div>
+        </div>
 
         <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanamiento_padre'">
           <h2>Descripción del Acompañamiento Familiar</h2>
@@ -125,9 +135,40 @@
               <input type="text" id="gradoHermano" formControlName="gradoHermano" placeholder="Ej: 3ro de primaria">
             </div>
           </div>
+          
+          <!-- Botón Citación a padres -->
+          <div class="citacion-section">
+            <button type="button" class="btn-citacion" (click)="toggleCitacionPadres()">
+              📋 Citación a padres
+            </button>
+            
+            <!-- Textarea Descripción del Acompañamiento Familiar -->
+            <div class="citacion-container" *ngIf="mostrarCitacionPadres">
+              <button type="button" class="btn-add-sesion" (click)="agregarSesionAcompanamientoFamiliar()">
+                + Agregar otra sesión
+              </button>
+              
+              <div class="sesiones-acompanamiento-list" formArrayName="sesionesAcompanamientoFamiliar">
+                <div *ngFor="let sesion of sesionesAcompanamientoFamiliar.controls; let i = index" 
+                     [formGroupName]="i" 
+                     class="sesion-acompanamiento-item">
+                  <div class="sesion-header">
+                    <h4>Sesión {{ i + 1 }}</h4>
+                    <button type="button" class="btn-remove-sesion" (click)="eliminarSesionAcompanamientoFamiliar(i)" *ngIf="sesionesAcompanamientoFamiliar.length > 1">
+                      ✕
+                    </button>
+                  </div>
+                  <div class="form-group">
+                    <label [for]="'descripcionAcompFamiliar' + i">Descripción del Acompañamiento Familiar</label>
+                    <textarea [id]="'descripcionAcompFamiliar' + i" formControlName="descripcion" rows="4" placeholder="Describa el acompañamiento familiar"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="form-section" >
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Información Médica</h2>
           <div class="form-group">
             <label for="motivoConsulta">Motivo de Consulta *</label>
@@ -143,7 +184,7 @@
           </div>
         </div>
 
-        <div class="form-section" >
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Diagnóstico y Tratamiento</h2>
           <div class="form-group">
             <label for="diagnostico">Diagnóstico</label>
@@ -159,7 +200,7 @@
           </div>
         </div>
 
-        <div class="form-section" >
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>PIAR</h2>
           <div class="form-group">
             <label for="archivos">Archivos (Imágenes o PDFs)</label>
@@ -185,7 +226,7 @@
           </div>
         </div>
 
-        <div class="form-section" >
+        <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Sesiones de Terapia</h2>
           <button type="button" class="btn-add" (click)="agregarSesion()">Agregar Sesión</button>
           <div class="sesiones-list" formArrayName="sesiones">

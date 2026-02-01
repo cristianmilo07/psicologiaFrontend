@@ -20,6 +20,7 @@ export class NuevaHistoriaClinicaComponent {
   selectedFiles: File[] = [];
   recognition: any;
   isListening: boolean = false;
+  mostrarCitacionPadres: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -62,6 +63,7 @@ export class NuevaHistoriaClinicaComponent {
       email: ['', [Validators.email]],
       acompanamiento: [''],
       descripcionAcompanamientoPadre: [''],
+      sesionesAcompanamientoFamiliar: this.fb.array([this.crearSesionAcompanamientoFamiliar()]),
       motivoConsulta: [''],
       antecedentesMedicos: [''],
       sintomasActuales: [''],
@@ -93,8 +95,30 @@ export class NuevaHistoriaClinicaComponent {
     return this.historiaClinicaForm.get('sesiones') as FormArray;
   }
 
+  get sesionesAcompanamientoFamiliar(): FormArray {
+    return this.historiaClinicaForm.get('sesionesAcompanamientoFamiliar') as FormArray;
+  }
+
+  crearSesionAcompanamientoFamiliar() {
+    return this.fb.group({
+      descripcion: ['']
+    });
+  }
+
+  agregarSesionAcompanamientoFamiliar() {
+    this.sesionesAcompanamientoFamiliar.push(this.crearSesionAcompanamientoFamiliar());
+  }
+
+  eliminarSesionAcompanamientoFamiliar(index: number) {
+    this.sesionesAcompanamientoFamiliar.removeAt(index);
+  }
+
   get isAcompanamientoSelected(): boolean {
     return !!this.historiaClinicaForm.get('acompanamiento')?.value;
+  }
+
+  toggleCitacionPadres() {
+    this.mostrarCitacionPadres = !this.mostrarCitacionPadres;
   }
 
   agregarSesion() {
@@ -160,7 +184,7 @@ export class NuevaHistoriaClinicaComponent {
 
     // Append form fields
     Object.keys(formValue).forEach(key => {
-      if (key === 'sesiones') {
+      if (key === 'sesiones' || key === 'sesionesAcompanamientoFamiliar') {
         formData.append(key, JSON.stringify(formValue[key]));
       } else {
         formData.append(key, formValue[key]);
@@ -176,7 +200,7 @@ export class NuevaHistoriaClinicaComponent {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.post('https://psicologiabackend.onrender.com/api/historias', formData, { headers })
+    this.http.post('http://localhost:3000/api/historias', formData, { headers })
       .subscribe({
         next: (response: any) => {
           this.showSuccessModal = true;
@@ -187,6 +211,13 @@ export class NuevaHistoriaClinicaComponent {
           while (sesionesArray.length > 0) {
             sesionesArray.removeAt(0);
           }
+          // Clear sesionesAcompanamientoFamiliar array
+          const sesionesAcompFamiliarArray = this.historiaClinicaForm.get('sesionesAcompanamientoFamiliar') as FormArray;
+          while (sesionesAcompFamiliarArray.length > 0) {
+            sesionesAcompFamiliarArray.removeAt(0);
+          }
+          // Add initial session for acompanamiento familiar
+          sesionesAcompFamiliarArray.push(this.crearSesionAcompanamientoFamiliar());
           // Clear selected files
           this.selectedFiles = [];
         },

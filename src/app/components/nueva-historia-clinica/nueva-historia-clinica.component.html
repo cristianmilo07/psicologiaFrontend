@@ -77,7 +77,7 @@
               <select id="acompanamiento" formControlName="acompanamiento" class="form-control">
                 <option value="">Seleccione una opción</option>
                 <option value="acompanamiento_padre">Acompañamiento familiar</option>
-                <option value="acompanante_estudiante">Acompañante a estudiante</option>
+                <option value="acompanante_estudiante">Acompañamiento al estudiante</option>
               </select>
             </div>
           </div>
@@ -92,48 +92,79 @@
           
           <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
             <h2>Información Familiar</h2>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="nombrePadre">Nombre del Padre</label>
-              <input type="text" id="nombrePadre" formControlName="nombrePadre" placeholder="Nombre completo del padre">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombrePadre">Nombre del Padre</label>
+                <input type="text" id="nombrePadre" formControlName="nombrePadre" placeholder="Nombre completo del padre">
+              </div>
+              <div class="form-group">
+                <label for="nombreMadre">Nombre de la Madre</label>
+                <input type="text" id="nombreMadre" formControlName="nombreMadre" placeholder="Nombre completo de la madre">
+              </div>
             </div>
-            <div class="form-group">
-              <label for="nombreMadre">Nombre de la Madre</label>
-              <input type="text" id="nombreMadre" formControlName="nombreMadre" placeholder="Nombre completo de la madre">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombreAcudiente">Nombre del Acudiente</label>
+                <input type="text" id="nombreAcudiente" formControlName="nombreAcudiente" placeholder="Nombre completo del acudiente">
+              </div>
+              <div class="form-group">
+                <label for="parentescoAcudiente">Parentesco del Acudiente *</label>
+                <select id="parentescoAcudiente" formControlName="parentescoAcudiente">
+                  <option value="">Seleccione</option>
+                  <option value="papa">Papá</option>
+                  <option value="mama">Mamá</option>
+                  <option value="abuelos">Abuelos</option>
+                  <option value="tios">Tíos</option>
+                  <option value="otros">Otros</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
+              <div class="form-group">
+                <label for="tieneHermanosColegio">¿Tiene hermanos/as en el colegio?</label>
+                <select id="tieneHermanosColegio" formControlName="tieneHermanosColegio">
+                  <option value="">Seleccione</option>
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="gradoHermano">Grado del hermano/a</label>
+                <input type="text" id="gradoHermano" formControlName="gradoHermano" placeholder="Ej: 3ro de primaria">
+              </div>
+            </div>
+            
+            <!-- Botón Citación a padres -->
+            <div class="citacion-section">
+              <button type="button" class="btn-citacion" (click)="toggleCitacionPadres()">
+                📋 Citación a padres
+              </button>
+              
+              <!-- Textarea Descripción del Acompañamiento Familiar -->
+              <div class="citacion-container" *ngIf="mostrarCitacionPadres">
+                <button type="button" class="btn-add-sesion" (click)="agregarSesionAcompanamientoFamiliar()">
+                  + Agregar otra sesión
+                </button>
+                
+                <div class="sesiones-acompanamiento-list" formArrayName="sesionesAcompanamientoFamiliar">
+                  <div *ngFor="let sesion of sesionesAcompanamientoFamiliar.controls; let i = index" 
+                       [formGroupName]="i" 
+                       class="sesion-acompanamiento-item">
+                    <div class="sesion-header">
+                      <h4>Sesión {{ i + 1 }}</h4>
+                      <button type="button" class="btn-remove-sesion" (click)="eliminarSesionAcompanamientoFamiliar(i)" *ngIf="sesionesAcompanamientoFamiliar.length > 1">
+                        ✕
+                      </button>
+                    </div>
+                    <div class="form-group">
+                      <label [for]="'descripcionAcompFamiliar' + i">Descripción del Acompañamiento Familiar</label>
+                      <textarea [id]="'descripcionAcompFamiliar' + i" formControlName="descripcion" rows="4" placeholder="Describa el acompañamiento familiar"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="nombreAcudiente">Nombre del Acudiente</label>
-              <input type="text" id="nombreAcudiente" formControlName="nombreAcudiente" placeholder="Nombre completo del acudiente">
-            </div>
-            <div class="form-group">
-              <label for="parentescoAcudiente">Parentesco del Acudiente *</label>
-              <select id="parentescoAcudiente" formControlName="parentescoAcudiente">
-                <option value="">Seleccione</option>
-                <option value="papa">Papá</option>
-                <option value="mama">Mamá</option>
-                <option value="abuelos">Abuelos</option>
-                <option value="tios">Tíos</option>
-                <option value="otros">Otros</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
-            <div class="form-group">
-              <label for="tieneHermanosColegio">¿Tiene hermanos/as en el colegio?</label>
-              <select id="tieneHermanosColegio" formControlName="tieneHermanosColegio">
-                <option value="">Seleccione</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="gradoHermano">Grado del hermano/a</label>
-              <input type="text" id="gradoHermano" formControlName="gradoHermano" placeholder="Ej: 3ro de primaria">
-            </div>
-          </div>
-        </div>
 
         <div class="form-section" *ngIf="historiaClinicaForm.get('acompanamiento')?.value === 'acompanante_estudiante'">
           <h2>Información Médica</h2>

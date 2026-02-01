@@ -361,6 +361,120 @@
   }
 }
 
+// Estilos para Citación a padres
+.citacion-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ECF0F1;
+
+  .btn-citacion {
+    background: var(--primary-purple);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+    }
+  }
+
+  .citacion-container {
+    margin-top: 20px;
+    animation: slideDown 0.3s ease;
+
+    .btn-add-sesion {
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 15px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(52, 152, 219, 0.4);
+      }
+    }
+  }
+
+  .sesiones-acompanamiento-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .sesion-acompanamiento-item {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+
+    .sesion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+
+      h4 {
+        color: var(--primary-purple);
+        margin: 0;
+        font-size: 1.1rem;
+      }
+
+      .btn-remove-sesion {
+        background: var(--primary-red);
+        color: white;
+        border: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1);
+          box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+        }
+      }
+    }
+
+    textarea {
+      min-height: 80px;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .sesiones-list {
   display: flex;
   flex-direction: column;

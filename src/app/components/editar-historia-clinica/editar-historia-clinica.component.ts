@@ -22,6 +22,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
   selectedFiles: File[] = [];
   existingFiles: any[] = [];
   acompanamiento: string = '';
+  mostrarCitacionPadres: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -46,15 +47,64 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       diagnostico: [''],
       planTratamiento: [''],
       notas: [''],
-      // Información familiar
-      nombrePadre: ['', Validators.required],
-      nombreMadre: ['', Validators.required],
-      nombreAcudiente: ['', Validators.required],
-      tieneHermanosColegio: [''], // No requerido
-      gradoHermano: [''], // No requerido
-      parentescoAcudiente: ['', Validators.required],
-      sesiones: this.fb.array([])
+      // Información familiar - validación dinámica según acompanamiento
+      nombrePadre: [''],
+      nombreMadre: [''],
+      nombreAcudiente: [''],
+      tieneHermanosColegio: [''],
+      gradoHermano: [''],
+      parentescoAcudiente: [''],
+      sesiones: this.fb.array([]),
+      sesionesAcompanamientoFamiliar: this.fb.array([])
     });
+
+    // Escuchar cambios en acompanamiento para validar dinámicamente
+    this.historiaClinicaForm.get('acompanamiento')?.valueChanges.subscribe(tipo => {
+      this.updateValidators(tipo);
+    });
+  }
+
+  updateValidators(tipo: string) {
+    const nombrePadre = this.historiaClinicaForm.get('nombrePadre');
+    const nombreMadre = this.historiaClinicaForm.get('nombreMadre');
+    const nombreAcudiente = this.historiaClinicaForm.get('nombreAcudiente');
+    const parentescoAcudiente = this.historiaClinicaForm.get('parentescoAcudiente');
+    const motivoConsulta = this.historiaClinicaForm.get('motivoConsulta');
+    const sintomasActuales = this.historiaClinicaForm.get('sintomasActuales');
+
+    if (tipo === 'acompanante_estudiante') {
+      // Campos requeridos para acompanante_estudiante
+      nombrePadre?.setValidators([Validators.required]);
+      nombreMadre?.setValidators([Validators.required]);
+      nombreAcudiente?.setValidators([Validators.required]);
+      parentescoAcudiente?.setValidators([Validators.required]);
+      motivoConsulta?.setValidators([Validators.required]);
+      sintomasActuales?.setValidators([Validators.required]);
+    } else if (tipo === 'acompanamiento_padre') {
+      // Solo acompanamiento es requerido
+      nombrePadre?.setValidators([]);
+      nombreMadre?.setValidators([]);
+      nombreAcudiente?.setValidators([]);
+      parentescoAcudiente?.setValidators([]);
+      motivoConsulta?.setValidators([]);
+      sintomasActuales?.setValidators([]);
+    } else {
+      // Limpiar todos los validators opcionales
+      nombrePadre?.setValidators([]);
+      nombreMadre?.setValidators([]);
+      nombreAcudiente?.setValidators([]);
+      parentescoAcudiente?.setValidators([]);
+      motivoConsulta?.setValidators([]);
+      sintomasActuales?.setValidators([]);
+    }
+
+    // Actualizar el estado de los controles
+    nombrePadre?.updateValueAndValidity();
+    nombreMadre?.updateValueAndValidity();
+    nombreAcudiente?.updateValueAndValidity();
+    parentescoAcudiente?.updateValueAndValidity();
+    motivoConsulta?.updateValueAndValidity();
+    sintomasActuales?.updateValueAndValidity();
   }
 
   ngOnInit() {
@@ -80,7 +130,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       'Content-Type': 'application/json'
     });
 
-    this.http.get(`https://psicologiabackend.onrender.com/api/historias/${id}`, { headers })
+    this.http.get(`http://localhost:3000/api/historias/${id}`, { headers })
       .subscribe({
         next: (response: any) => {
           this.originalHistoriaData = { ...response };
@@ -145,6 +195,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
           new Date(sesion.fecha).toISOString().split('T')[0] : '';
 
         sesionesArray.push(this.fb.group({
+          _id: [sesion._id || null],
           fecha: [fechaSesion, Validators.required],
           tipo: [sesion.tipo || '', Validators.required],
           notas: [sesion.notas || '', Validators.required],
@@ -154,8 +205,31 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       });
     }
 
+    // Load sesionesAcompanamientoFamiliar
+    const sesionesAcompFamiliarArray = this.historiaClinicaForm.get('sesionesAcompanamientoFamiliar') as FormArray;
+    sesionesAcompFamiliarArray.clear();
+
+    if (historia.sesionesAcompanamientoFamiliar && historia.sesionesAcompanamientoFamiliar.length > 0) {
+      historia.sesionesAcompanamientoFamiliar.forEach((sesion: any) => {
+        sesionesAcompFamiliarArray.push(this.fb.group({
+          _id: [sesion._id || null],
+          descripcion: [sesion.descripcion || '']
+        }));
+      });
+      this.mostrarCitacionPadres = true;
+    } else {
+      // Add initial empty session
+      sesionesAcompFamiliarArray.push(this.fb.group({
+        _id: [null],
+        descripcion: ['']
+      }));
+    }
+
     // Set existing files
     this.existingFiles = historia.archivos || [];
+
+    // Apply validators based on acompañamiento type
+    this.updateValidators(historia.acompanamiento || '');
   }
 
   logout() {
@@ -164,6 +238,24 @@ export class EditarHistoriaClinicaComponent implements OnInit {
 
   get sesiones(): FormArray {
     return this.historiaClinicaForm.get('sesiones') as FormArray;
+  }
+
+  get sesionesAcompanamientoFamiliar(): FormArray {
+    return this.historiaClinicaForm.get('sesionesAcompanamientoFamiliar') as FormArray;
+  }
+
+  toggleCitacionPadres() {
+    this.mostrarCitacionPadres = !this.mostrarCitacionPadres;
+  }
+
+  agregarSesionAcompanamientoFamiliar() {
+    this.sesionesAcompanamientoFamiliar.push(this.fb.group({
+      descripcion: ['']
+    }));
+  }
+
+  eliminarSesionAcompanamientoFamiliar(index: number) {
+    this.sesionesAcompanamientoFamiliar.removeAt(index);
   }
 
   get isAcompanamientoSelected(): boolean {
@@ -241,6 +333,20 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       }
     }
 
+    // Compare sesionesAcompanamientoFamiliar array
+    if (currentData.sesionesAcompanamientoFamiliar.length !== this.originalHistoriaData.sesionesAcompanamientoFamiliar?.length) {
+      return true;
+    }
+
+    for (let i = 0; i < currentData.sesionesAcompanamientoFamiliar.length; i++) {
+      const currentSesion = currentData.sesionesAcompanamientoFamiliar[i];
+      const originalSesion = this.originalHistoriaData.sesionesAcompanamientoFamiliar?.[i];
+
+      if (!originalSesion || currentSesion.descripcion !== originalSesion.descripcion) {
+        return true;
+      }
+    }
+
     return false;
   }
 
@@ -255,7 +361,16 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       // Show confirmation modal
       this.showConfirmModal = true;
     } else {
-      alert('Por favor, complete todos los campos requeridos');
+      // Mostrar campos inválidos para depuración
+      const invalidFields: string[] = [];
+      Object.keys(this.historiaClinicaForm.controls).forEach(key => {
+        const control = this.historiaClinicaForm.get(key);
+        if (control?.invalid) {
+          invalidFields.push(key);
+        }
+      });
+      console.log('Campos inválidos:', invalidFields);
+      alert('Por favor, complete todos los campos requeridos. Campos faltantes: ' + invalidFields.join(', '));
     }
   }
 
@@ -273,7 +388,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
 
     // Append form fields
     Object.keys(formValue).forEach(key => {
-      if (key === 'sesiones') {
+      if (key === 'sesiones' || key === 'sesionesAcompanamientoFamiliar') {
         formData.append(key, JSON.stringify(formValue[key]));
       } else {
         formData.append(key, formValue[key]);
@@ -292,7 +407,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.put(`https://psicologiabackend.onrender.com/api/historias/${this.historiaId}`, formData, { headers })
+    this.http.put(`http://localhost:3000/api/historias/${this.historiaId}`, formData, { headers })
       .subscribe({
         next: (response: any) => {
           console.log('Historia clínica actualizada:', response);
