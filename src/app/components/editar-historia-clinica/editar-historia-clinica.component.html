@@ -59,8 +59,22 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="telefono">Teléfono</label>
-              <input type="tel" id="telefono" formControlName="telefono" placeholder="Número de teléfono">
+              <label for="gradoPaciente">Grado Escolar</label>
+              <select id="gradoPaciente" formControlName="gradoPaciente">
+                <option value="">Seleccione</option>
+                <option value="transicion">Transición</option>
+                <option value="primero">1° de Primaria</option>
+                <option value="segundo">2° de Primaria</option>
+                <option value="tercero">3° de Primaria</option>
+                <option value="cuarto">4° de Primaria</option>
+                <option value="quinto">5° de Primaria</option>
+                <option value="sexto">6° de Primaria</option>
+                <option value="septimo">7° de Primaria</option>
+                <option value="octavo">8° de Primaria</option>
+                <option value="noveno">9° de Básica</option>
+                <option value="decimo">10° de Básica</option>
+                <option value="once">11° de Media</option>
+              </select>
             </div>
           </div>
           <div class="form-group">
@@ -70,6 +84,16 @@
           <div class="form-group">
             <label for="email">Correo Electrónico</label>
             <input type="email" id="email" formControlName="email" placeholder="correo@ejemplo.com">
+          </div>
+          <div class="form-group">
+            <label for="nivelRiesgo">Nivel de Riesgo</label>
+            <select id="nivelRiesgo" formControlName="nivelRiesgo">
+              <option value="">Seleccione</option>
+              <option value="critico">🔴 Crítico / Emergencia</option>
+              <option value="alto">🟠 Alto</option>
+              <option value="medio">🟡 Medio</option>
+              <option value="bajo">🟢 Bajo / Preventivo</option>
+            </select>
           </div>
         </div>
 

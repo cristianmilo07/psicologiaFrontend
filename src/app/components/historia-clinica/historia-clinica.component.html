@@ -32,23 +32,38 @@
      </h2>
      <p class="welcome-subtitle">Administra y consulta las historias clínicas de tus pacientes de manera eficiente</p>
 
-     <!-- Botón Nueva Historia y Buscador -->
+     <!-- Botón Nueva Historia, Buscador y Filtro -->
      <div class="actions-section">
        <button class="btn-nueva-historia" routerLink="/nueva-historia-clinica">+ Nueva Historia Clínica</button>
        <div class="search-container">
          <input type="text" placeholder="Buscar por nombre del paciente..." class="search-input" [(ngModel)]="searchTerm" (input)="filterHistorias()">
          <span class="search-icon">🔍</span>
        </div>
+       <div class="filter-container">
+         <select class="filter-select" [(ngModel)]="selectedRiskLevel" (change)="filterHistorias()">
+           <option value="">Filtrar por Nivel de Riesgo</option>
+           <option value="todos">Todos</option>
+           <option value="critico">🔴 Crítico / Emergencia</option>
+           <option value="alto">🟠 Alto</option>
+           <option value="medio">🟡 Medio</option>
+           <option value="bajo">🟢 Bajo / Preventivo</option>
+         </select>
+       </div>
      </div>
    </div>
 
    <div class="historia-section">
-     <h2 class="subsection-title">Historias Clínicas {{ searchTerm ? '(Filtradas)' : 'Recientes' }}</h2>
+     <h2 class="subsection-title">Historias Clínicas {{ (searchTerm || selectedRiskLevel) ? '(Filtradas)' : 'Recientes' }}</h2>
 
      <div class="historia-list">
        <div class="historia-card" *ngFor="let historia of filteredHistorias">
          <div class="historia-header">
-           <h3 class="paciente-nombre">{{ historia.pacienteNombre }}</h3>
+           <div class="paciente-info">
+             <h3 class="paciente-nombre">{{ historia.pacienteNombre }}</h3>
+             <span class="riesgo-badge" [ngClass]="getRiesgoClass(historia.nivelRiesgo)" *ngIf="historia.nivelRiesgo">
+               {{ getRiesgoLabel(historia.nivelRiesgo) }}
+             </span>
+           </div>
            <span class="historia-fecha">{{ historia.fecha }}</span>
          </div>
          <div class="historia-content">
@@ -71,6 +86,11 @@
            <button class="btn-eliminar" (click)="eliminar(historia)">Eliminar</button>
          </div>
        </div>
+     </div>
+
+     <!-- Mensaje cuando no hay resultados -->
+     <div class="no-results" *ngIf="filteredHistorias.length === 0">
+       <p>No se encontraron historias clínicas con los filtros aplicados.</p>
      </div>
    </div>
 

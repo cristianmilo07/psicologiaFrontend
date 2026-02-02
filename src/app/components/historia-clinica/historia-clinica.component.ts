@@ -17,6 +17,7 @@ export class HistoriaClinicaComponent implements OnInit {
   historiasClinicas: any[] = [];
   filteredHistorias: any[] = [];
   searchTerm: string = '';
+  selectedRiskLevel: string = '';
   showDeleteModal: boolean = false;
   historiaToDelete: any = null;
 
@@ -62,7 +63,8 @@ export class HistoriaClinicaComponent implements OnInit {
               id: historia._id,
               numSesiones: numSesiones,
               tieneSesiones: numSesiones > 0,
-              ultimaSesion: numSesiones > 0 ? sesiones[sesiones.length - 1] : null
+              ultimaSesion: numSesiones > 0 ? sesiones[sesiones.length - 1] : null,
+              nivelRiesgo: historia.nivelRiesgo || ''
             };
           });
           this.filteredHistorias = [...this.historiasClinicas];
@@ -95,13 +97,53 @@ export class HistoriaClinicaComponent implements OnInit {
   }
 
   filterHistorias() {
-    if (!this.searchTerm.trim()) {
-      this.filteredHistorias = [...this.historiasClinicas];
-    } else {
+    let result = this.historiasClinicas;
+
+    // Filter by search term
+    if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
-      this.filteredHistorias = this.historiasClinicas.filter(historia =>
+      result = result.filter(historia =>
         historia.pacienteNombre.toLowerCase().includes(term)
       );
+    }
+
+    // Filter by risk level
+    if (this.selectedRiskLevel && this.selectedRiskLevel !== 'todos') {
+      result = result.filter(historia =>
+        historia.nivelRiesgo === this.selectedRiskLevel
+      );
+    }
+
+    this.filteredHistorias = result;
+  }
+
+  getRiesgoClass(nivelRiesgo: string): string {
+    switch (nivelRiesgo) {
+      case 'critico':
+        return 'riesgo-critico';
+      case 'alto':
+        return 'riesgo-alto';
+      case 'medio':
+        return 'riesgo-medio';
+      case 'bajo':
+        return 'riesgo-bajo';
+      default:
+        return '';
+    }
+  }
+
+  getRiesgoLabel(nivelRiesgo: string): string {
+    switch (nivelRiesgo) {
+      case 'critico':
+        return '🔴 Crítico';
+      case 'alto':
+        return '🟠 Alto';
+      case 'medio':
+        return '🟡 Medio';
+      case 'bajo':
+        return '🟢 Bajo';
+      default:
+        return '';
     }
   }
 

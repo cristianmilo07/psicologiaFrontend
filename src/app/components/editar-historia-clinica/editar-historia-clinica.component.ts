@@ -36,9 +36,11 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       nombrePaciente: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
       genero: ['', Validators.required],
+      gradoPaciente: [''],
       direccion: [''],
       telefono: [''],
       email: ['', [Validators.email]],
+      nivelRiesgo: [''],
       acompanamiento: ['', Validators.required],
       descripcionAcompanamientoPadre: [''],
       motivoConsulta: ['', Validators.required],
@@ -164,9 +166,11 @@ export class EditarHistoriaClinicaComponent implements OnInit {
       nombrePaciente: historia.nombrePaciente || '',
       fechaNacimiento: fechaNacimiento,
       genero: historia.genero || '',
+      gradoPaciente: historia.gradoPaciente || historia.grado || '',
       direccion: historia.direccion || '',
       telefono: historia.telefono || '',
       email: historia.email || '',
+      nivelRiesgo: historia.nivelRiesgo || '',
       acompanamiento: historia.acompanamiento || '',
       descripcionAcompanamientoPadre: historia.descripcionAcompanamientoPadre || '',
       motivoConsulta: historia.motivoConsulta || '',
@@ -302,7 +306,7 @@ export class EditarHistoriaClinicaComponent implements OnInit {
 
     // Compare key fields
     const fieldsToCompare = [
-      'nombrePaciente', 'fechaNacimiento', 'genero', 'direccion', 'telefono', 'email',
+      'nombrePaciente', 'fechaNacimiento', 'genero', 'gradoPaciente', 'direccion', 'telefono', 'email', 'nivelRiesgo',
       'acompanamiento', 'descripcionAcompanamientoPadre', 'motivoConsulta', 'antecedentesMedicos', 'sintomasActuales', 'diagnostico',
       'planTratamiento', 'notas', 'nombrePadre', 'nombreMadre', 'nombreAcudiente',
       'tieneHermanosColegio', 'gradoHermano', 'parentescoAcudiente'
