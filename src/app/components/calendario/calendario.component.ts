@@ -21,6 +21,8 @@ export class CalendarioComponent implements OnInit {
   showModal: boolean = false;
   selectedDateForModal: Date | null = null;
   newAppointment: { time: string; description: string; type: 'alumno' | 'acudiente' } = { time: '', description: '', type: 'alumno' };
+  showDeleteConfirmation: boolean = false;
+  citaToDelete: Cita | null = null;
 
   @Output() appointmentScheduled = new EventEmitter<{date: Date, hour: string}>();
 
@@ -118,6 +120,34 @@ export class CalendarioComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+  }
+
+  confirmDelete(cita: Cita) {
+    this.citaToDelete = cita;
+    this.showDeleteConfirmation = true;
+  }
+
+  cancelDelete() {
+    this.showDeleteConfirmation = false;
+    this.citaToDelete = null;
+  }
+
+  deleteAppointment() {
+    if (this.citaToDelete && this.citaToDelete._id) {
+      this.citasService.deleteCita(this.citaToDelete._id).subscribe({
+        next: () => {
+          this.appointments = this.appointments.filter(a => a._id !== this.citaToDelete!._id);
+          this.showDeleteConfirmation = false;
+          this.citaToDelete = null;
+          this.notificationsService.addNotification('Cita eliminada correctamente');
+        },
+        error: (error) => {
+          console.error('Error deleting appointment', error);
+          this.showDeleteConfirmation = false;
+          this.citaToDelete = null;
+        }
+      });
+    }
   }
 
   isToday(date: Date): boolean {
