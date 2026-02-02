@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 export class EstudiantesComponent {
   currentPage = 1;
   submitted = false;
+  selectedClima: string = '';
+  selectedEmoji: string = '';
   formData = {
     clima: '',
     emoji: '',
@@ -33,6 +35,22 @@ export class EstudiantesComponent {
 
   selectOption(field: string, value: string) {
     (this.formData as any)[field] = value;
+  }
+
+  selectClima(clima: string) {
+    this.selectedClima = clima;
+    this.formData.clima = clima;
+  }
+
+  selectEmoji(emoji: string) {
+    this.selectedEmoji = emoji;
+    this.formData.emoji = emoji;
+  }
+
+  continuar() {
+    if (this.selectedClima && this.selectedEmoji) {
+      this.nextPage();
+    }
   }
 
   nextPage() {

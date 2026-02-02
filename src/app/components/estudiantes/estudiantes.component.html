@@ -1,10 +1,15 @@
 <div class="main-container">
   <div class="content-wrapper">
-    <!-- Título con icono de sol -->
-    <h1 class="title">
-      <span class="sun-icon">☀️</span>
-      ¡Hola Estudiante!
-    </h1>
+    <!-- Encabezado -->
+    <header class="header">
+      <img 
+        src="assets/images/sol_titulo.png" 
+        alt="Sol" 
+        class="sun-title"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+      <span class="sun-emoji" style="display: none;">☀️</span>
+      <h1 class="title">¡Hola Estudiante!</h1>
+    </header>
 
     <!-- Subtítulo -->
     <div class="subtitle-container">
@@ -12,74 +17,114 @@
       <span class="level-title">Clima Emocional</span>
     </div>
 
-    <!-- Botones de clima emocional (vertical stack) -->
-    <div class="weather-buttons">
+    <!-- Grid 2x2 de botones de clima -->
+    <div class="weather-grid">
       <button 
         class="weather-btn sunny" 
         (click)="selectClima('soleado')"
         [class.selected]="selectedClima === 'soleado'">
-        <span class="btn-icon">☀️</span>
-        Soleado y feliz
+        <img 
+          src="assets/images/Soleado.jpg" 
+          alt="Soleado" 
+          class="btn-image"
+          onerror="this.style.display='none'; this.parentElement.querySelector('.btn-fallback').style.display='flex';">
+        <span class="btn-fallback" style="display: none;">☀️</span>
+        <span class="btn-text">Soleado y feliz</span>
       </button>
 
       <button 
         class="weather-btn cloudy" 
         (click)="selectClima('nublado')"
         [class.selected]="selectedClima === 'nublado'">
-        <span class="btn-icon">☁️</span>
-        Nublado y pensativo
+        <img 
+          src="assets/images/boton_nublado.png" 
+          alt="Nublado" 
+          class="btn-image"
+          onerror="this.style.display='none'; this.parentElement.querySelector('.btn-fallback').style.display='flex';">
+        <span class="btn-fallback" style="display: none;">☁️</span>
+        <span class="btn-text">Nublado y pensativo</span>
       </button>
 
       <button 
         class="weather-btn stormy" 
         (click)="selectClima('tormentoso')"
         [class.selected]="selectedClima === 'tormentoso'">
-        <span class="btn-icon">⛈️</span>
-        Tormentoso/Enojado
+        <img 
+          src="assets/images/boton_tormentoso.png" 
+          alt="Tormentoso" 
+          class="btn-image"
+          onerror="this.style.display='none'; this.parentElement.querySelector('.btn-fallback').style.display='flex';">
+        <span class="btn-fallback" style="display: none;">⛈️</span>
+        <span class="btn-text">Tormentoso/Enojado</span>
       </button>
 
       <button 
         class="weather-btn rainy" 
         (click)="selectClima('lluvioso')"
         [class.selected]="selectedClima === 'lluvioso'">
-        <span class="btn-icon">🌧️</span>
-        Lluvioso/Triste
+        <img 
+          src="assets/images/boton_lluvioso.png" 
+          alt="Lluvioso" 
+          class="btn-image"
+          onerror="this.style.display='none'; this.parentElement.querySelector('.btn-fallback').style.display='flex';">
+        <span class="btn-fallback" style="display: none;">🌧️</span>
+        <span class="btn-text">Lluvioso/Triste</span>
       </button>
     </div>
 
-    <!-- Sección de emoji -->
+    <!-- Fila horizontal de emojis -->
     <div class="emoji-section">
       <p class="emoji-instruction">Usa un emoji para describir tu semana</p>
-      <div class="emoji-circles">
+      <div class="emoji-row">
         <button 
           class="emoji-circle" 
           (click)="selectEmoji('flor')"
           [class.selected]="selectedEmoji === 'flor'">
-          🌸
+          <img 
+            src="assets/images/1.jpg" 
+            alt="Flor" 
+            class="emoji-img"
+            onerror="this.style.display='none'; this.parentElement.textContent='🌸';">
         </button>
         <button 
           class="emoji-circle" 
           (click)="selectEmoji('cool')"
           [class.selected]="selectedEmoji === 'cool'">
-          😎
+          <img 
+            src="assets/images/2.jpg" 
+            alt="Cool" 
+            class="emoji-img"
+            onerror="this.style.display='none'; this.parentElement.textContent='😎';">
         </button>
         <button 
           class="emoji-circle" 
           (click)="selectEmoji('pensando')"
           [class.selected]="selectedEmoji === 'pensando'">
-          🤔
+          <img 
+            src="assets/images/3.jpg" 
+            alt="Pensando" 
+            class="emoji-img"
+            onerror="this.style.display='none'; this.parentElement.textContent='🤔';">
         </button>
         <button 
           class="emoji-circle" 
           (click)="selectEmoji('arcoiris')"
           [class.selected]="selectedEmoji === 'arcoiris'">
-          🌈
+          <img 
+            src="assets/images/4.jpg" 
+            alt="Arcoíris" 
+            class="emoji-img"
+            onerror="this.style.display='none'; this.parentElement.textContent='🌈';">
         </button>
         <button 
           class="emoji-circle" 
           (click)="selectEmoji('cohete')"
           [class.selected]="selectedEmoji === 'cohete'">
-          🚀
+          <img 
+            src="assets/images/5.jpg" 
+            alt="Cohete" 
+            class="emoji-img"
+            onerror="this.style.display='none'; this.parentElement.textContent='🚀';">
         </button>
       </div>
     </div>
