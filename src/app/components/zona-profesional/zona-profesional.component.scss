@@ -359,6 +359,49 @@
   }
 }
 
+.notifications-section {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    color: var(--primary-blue);
+    margin-bottom: 15px;
+  }
+
+  .notifications-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+
+    .notification-item {
+      background: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
+  }
+
+  .btn-clear {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Fredoka One', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: var(--primary-blue-dark);
+    }
+  }
+}
+
 @keyframes drift {
   0% {
     transform: translateX(0);

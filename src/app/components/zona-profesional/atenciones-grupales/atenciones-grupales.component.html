@@ -134,8 +134,15 @@
             <span class="toggle-icon">{{ grado.expanded ? '▼' : '▶' }}</span>
           </div>
           <div class="grade-content" *ngIf="grado.expanded">
-            <div class="session-item" *ngFor="let dia of grado.dias; let i = index">
-              <p>📅 {{ dia }} de {{ selectedMonthLabel }} – {{ getAtencionDetails(grado.grado, dia) }}</p>
+            <div class="session-item" *ngFor="let atencion of getAtencionesByGrado(grado.grado)">
+              <div class="session-info">
+                <p>📅 {{ atencion.fecha | date:'dd/MM/yyyy' }} – <strong>{{ atencion.tema }}</strong></p>
+                <p class="session-details">👥 {{ atencion.numeroParticipantes }} participantes</p>
+              </div>
+              <div class="session-actions">
+                <button class="btn-action btn-edit" (click)="handleEdit(atencion)" title="Editar">✏️</button>
+                <button class="btn-action btn-delete" (click)="handleDelete(atencion._id!)" title="Eliminar">🗑️</button>
+              </div>
             </div>
           </div>
         </div>
@@ -151,6 +158,56 @@
         </div>
         <div class="notification-message">{{ notificationMessage }}</div>
         <button class="notification-close" (click)="closeNotification()">×</button>
+      </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" *ngIf="showEditForm" (click)="toggleEditForm()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>✏️ Editar Atención Grupal</h3>
+          <button class="close-button" (click)="toggleEditForm()">×</button>
+        </div>
+        <form class="atencion-form" (ngSubmit)="actualizarAtencion()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editGrado">🎓 Grado:</label>
+              <select id="editGrado" [(ngModel)]="editarAtencion.grado" name="grado" required>
+                <option *ngFor="let grado of grados" [value]="grado">{{ grado }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editFecha">📅 Fecha:</label>
+              <input type="date" id="editFecha" [(ngModel)]="editarAtencion.fecha" name="fecha" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editTema">🎯 Tema:</label>
+              <input type="text" id="editTema" [(ngModel)]="editarAtencion.tema" name="tema" placeholder="Tema de la sesión" required>
+            </div>
+            <div class="form-group">
+              <label for="editNumeroParticipantes">👥 Número de Participantes:</label>
+              <input type="number" id="editNumeroParticipantes" [(ngModel)]="editarAtencion.numeroParticipantes" name="numeroParticipantes" min="1" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editObjetivos">🎯 Objetivos:</label>
+            <textarea id="editObjetivos" [(ngModel)]="editarAtencion.objetivos" name="objetivos" placeholder="Objetivos de la sesión" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="editActividades">🎮 Actividades:</label>
+            <textarea id="editActividades" [(ngModel)]="editarAtencion.actividades" name="actividades" placeholder="Actividades realizadas" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="editObservaciones">📝 Observaciones:</label>
+            <textarea id="editObservaciones" [(ngModel)]="editarAtencion.observaciones" name="observaciones" placeholder="Observaciones adicionales" rows="3"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="save-button">💾 Guardar Cambios</button>
+            <button type="button" class="cancel-button" (click)="toggleEditForm()">❌ Cancelar</button>
+          </div>
+        </form>
       </div>
     </div>
   </main>

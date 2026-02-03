@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HeaderComponent } from '../header/header.component';
+import { NotificationsService } from '../../services/notifications.service';
 
 @Component({
   selector: 'app-zona-profesional',
@@ -11,14 +12,22 @@ import { HeaderComponent } from '../header/header.component';
   templateUrl: './zona-profesional.component.html',
   styleUrls: ['./zona-profesional.component.scss']
 })
-export class ZonaProfesionalComponent {
+export class ZonaProfesionalComponent implements OnInit {
   user: any = null;
+  notifications: string[] = [];
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationsService: NotificationsService
   ) {
     this.user = this.authService.getCurrentUser();
+  }
+
+  ngOnInit() {
+    this.notificationsService.notifications$.subscribe(notifications => {
+      this.notifications = notifications;
+    });
   }
 
   logout() {
@@ -30,6 +39,10 @@ export class ZonaProfesionalComponent {
     if (target.value === 'logout') {
       this.logout();
     }
+  }
+
+  clearNotifications() {
+    this.notificationsService.clearNotifications();
   }
 }
 

@@ -60,9 +60,65 @@
 
       <div class="card-actions">
         <button class="btn-view" (click)="verReporte(reporte._id!)">👁️ Ver</button>
+        <button class="btn-edit" (click)="editarReporte(reporte._id!)">✏️ Editar</button>
         <button class="btn-delete" (click)="eliminarReporte(reporte._id!)">🗑️ Eliminar</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" *ngIf="showEditModal" (click)="toggleEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>✏️ Editar Reporte Emocional</h3>
+      <button class="close-button" (click)="toggleEditModal()">×</button>
+    </div>
+    <form class="edit-form" (ngSubmit)="guardarEdicion()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editNombre">📝 Nombre del estudiante:</label>
+          <input type="text" id="editNombre" [(ngModel)]="editingReporte.nombreEstudiante" name="nombreEstudiante" required>
+        </div>
+        <div class="form-group">
+          <label for="editFecha">📅 Fecha del reporte:</label>
+          <input type="date" id="editFecha" [(ngModel)]="editingReporte.fechaReporte" name="fechaReporte" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="editEstado">😊 Estado emocional predominante:</label>
+        <select id="editEstado" [(ngModel)]="editingReporte.estadoEmocionalPredominante" name="estadoEmocionalPredominante">
+          <option value="">Seleccionar</option>
+          <option value="Estable">Estable</option>
+          <option value="Variable">Variable</option>
+          <option value="Inestable">Inestable</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editEdad">👶 Edad / Grado:</label>
+        <input type="text" id="editEdad" [(ngModel)]="editingReporte.edadGrado" name="edadGrado" placeholder="Ej: 10 años / 5to grado">
+      </div>
+      <div class="form-group">
+        <label for="editObservaciones">📝 Observaciones psicológicas:</label>
+        <textarea id="editObservaciones" [(ngModel)]="editingReporte.observacionesPsicologicas" name="observacionesPsicologicas" rows="4" placeholder="Describa las observaciones..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="save-button">💾 Guardar Cambios</button>
+        <button type="button" class="cancel-button" (click)="toggleEditModal()">❌ Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Notification Modal -->
+<div class="notification-modal" *ngIf="showNotification" [ngClass]="notificationType">
+  <div class="notification-content">
+    <div class="notification-icon">
+      <span *ngIf="notificationType === 'success'">✅</span>
+      <span *ngIf="notificationType === 'error'">❌</span>
+    </div>
+    <div class="notification-message">{{ notificationMessage }}</div>
+    <button class="notification-close" (click)="closeNotification()">×</button>
   </div>
 </div>
 </div>

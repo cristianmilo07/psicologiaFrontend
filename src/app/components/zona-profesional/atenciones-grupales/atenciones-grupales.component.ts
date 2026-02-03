@@ -32,6 +32,7 @@ export class AtencionesGrupalesComponent implements OnInit {
   atencionesPorGrado: any[] = [];
   atenciones: AtencionGrupal[] = [];
   showForm = false;
+  showEditForm = false;
   maxAtenciones = 0;
   loading = false;
 
@@ -49,6 +50,9 @@ export class AtencionesGrupalesComponent implements OnInit {
     actividades: '',
     observaciones: ''
   };
+
+  editarAtencion: Partial<AtencionGrupal> = {};
+  editingId: string = '';
 
   grados = [
     'Preescolar', 'Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto',
@@ -264,5 +268,57 @@ export class AtencionesGrupalesComponent implements OnInit {
       a.grado === grado && new Date(a.fecha).getDate() === dia
     );
     return atencion ? `Tema: ${atencion.tema}` : 'Sesión de terapia grupal';
+  }
+
+  getAtencionesByGrado(grado: string): AtencionGrupal[] {
+    return this.atenciones.filter(a => a.grado === grado);
+  }
+
+  handleDelete(id: string): void {
+    if (confirm('¿Está seguro de que desea eliminar esta atención grupal?')) {
+      this.atencionesService.eliminarAtencion(id).subscribe({
+        next: () => {
+          this.showNotificationModal('¡Atención grupal eliminada exitosamente! 🗑️', 'success');
+          this.loadAtenciones();
+        },
+        error: (error) => {
+          console.error('Error al eliminar atención:', error);
+          this.showNotificationModal('Error al eliminar la atención grupal 😔', 'error');
+        }
+      });
+    }
+  }
+
+  handleEdit(atencion: AtencionGrupal): void {
+    this.editingId = atencion._id!;
+    this.editarAtencion = { ...atencion };
+    this.toggleEditForm();
+  }
+
+  toggleEditForm(): void {
+    this.showEditForm = !this.showEditForm;
+    if (!this.showEditForm) {
+      this.editarAtencion = {};
+      this.editingId = '';
+    }
+  }
+
+  actualizarAtencion(): void {
+    if (!this.editingId) {
+      this.showNotificationModal('Error: No hay atención seleccionada para editar', 'error');
+      return;
+    }
+
+    this.atencionesService.actualizarAtencion(this.editingId, this.editarAtencion).subscribe({
+      next: () => {
+        this.showNotificationModal('¡Atención grupal actualizada exitosamente! ✏️', 'success');
+        this.toggleEditForm();
+        this.loadAtenciones();
+      },
+      error: (error) => {
+        console.error('Error al actualizar atención:', error);
+        this.showNotificationModal('Error al actualizar la atención grupal 😔', 'error');
+      }
+    });
   }
 }

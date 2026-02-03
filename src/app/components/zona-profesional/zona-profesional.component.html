@@ -8,11 +8,11 @@
 
   <header class="section-header">
     <div class="header-left">
-      <span class="star-icon"><img src="assets/images/logoCarolinaPsicologa.png" alt="Logo Carolina Psicóloga" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></span>
-      <a routerLink="/dashboard" class="back-link">Home</a>
+      <span class="star-icon">⭐</span>
+      <a routerLink="/zona-profesional" class="back-link">Volver</a>
     </div>
     <div class="header-center">
-      <h1 class="section-title">Zona Profesional</h1>
+      <h1 class="section-title">Zona Profesionaldfasdfasd</h1>
     </div>
     <div class="header-right">
       <div class="dropdown">
@@ -31,6 +31,16 @@
         <span class="title-star">⭐</span>
       </h2>
       <p class="welcome-subtitle">Gestiona tus pacientes y sesiones de manera eficiente</p>
+    </div>
+
+    <div class="notifications-section" *ngIf="notifications.length > 0">
+      <h3>Notificaciones</h3>
+      <ul class="notifications-list">
+        <li *ngFor="let notification of notifications" class="notification-item">
+          {{ notification }}
+        </li>
+      </ul>
+      <button class="btn-clear" (click)="clearNotifications()">Limpiar Notificaciones</button>
     </div>
 
     <div class="zones-section">
