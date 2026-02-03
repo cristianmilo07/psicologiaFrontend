@@ -120,6 +120,24 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
   }
+
+  .btn-excel {
+    padding: 12px 24px;
+    background: #217346;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+
+    &:hover {
+      background: #1e6b42;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+  }
 }
 
 .loading, .no-reports {

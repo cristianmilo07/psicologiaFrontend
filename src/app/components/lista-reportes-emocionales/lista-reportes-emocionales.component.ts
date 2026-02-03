@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReportesEmocionalesService, ReporteEmocional } from '../../services/reportes-emocionales.service';
 import { AuthService } from '../../services/auth.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-lista-reportes-emocionales',
@@ -127,5 +128,34 @@ export class ListaReportesEmocionalesComponent implements OnInit {
     if (target.value === 'logout') {
       this.logout();
     }
+  }
+
+  exportarExcel(): void {
+    if (this.reportes.length === 0) {
+      this.showNotificationModal('No hay datos para exportar', 'error');
+      return;
+    }
+
+    const datos = this.reportes.map((reporte, index) => ({
+      '#': index + 1,
+      'Estudiante': reporte.nombreEstudiante || '',
+      'Fecha': reporte.fechaReporte ? new Date(reporte.fechaReporte).toLocaleDateString('es-CO') : '',
+      'Edad/Grado': reporte.edadGrado || '',
+      'Psicóloga': reporte.psicologaResponsable || '',
+      'Estado Emocional': reporte.estadoEmocionalPredominante || '',
+      'Regulación Emocional': reporte.regulacionEmocional || '',
+      'Relaciones Sociales': reporte.relacionesSociales || '',
+      'Adaptación Escolar': reporte.adaptacionEscolar || '',
+      'Observaciones': reporte.observacionesPsicologicas || ''
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datos);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Reportes Emocionales');
+
+    const fecha = new Date().toLocaleDateString('es-CO').replace(/\//g, '-');
+    XLSX.writeFile(wb, `reportes-emocionales-${fecha}.xlsx`);
+
+    this.showNotificationModal('¡Archivo Excel descargado! 📊', 'success');
   }
 }

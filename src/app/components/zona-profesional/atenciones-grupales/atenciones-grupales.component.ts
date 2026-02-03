@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { AtencionesGrupalesService, AtencionGrupal } from '../../../services/atenciones-grupales.service';
 import html2pdf from 'html2pdf.js';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-atenciones-grupales',
@@ -233,6 +234,43 @@ export class AtencionesGrupalesComponent implements OnInit {
       if (notificationModal) notificationModal.style.display = '';
       if (formModal) formModal.style.display = '';
     });
+  }
+
+  exportarExcel(): void {
+    if (this.atenciones.length === 0) {
+      this.showNotificationModal('No hay datos para exportar', 'error');
+      return;
+    }
+
+    // Prepare data for Excel
+    const datos = this.atenciones.map((atencion, index) => ({
+      '#': index + 1,
+      'Grado': atencion.grado,
+      'Fecha': new Date(atencion.fecha).toLocaleDateString('es-CO'),
+      'Tema': atencion.tema,
+      'Participantes': atencion.numeroParticipantes,
+      'Objetivos': atencion.objetivos || '',
+      'Actividades': atencion.actividades || '',
+      'Observaciones': atencion.observaciones || ''
+    }));
+
+    // Create worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datos);
+
+    // Create workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Atenciones Grupales');
+
+    // Get month label for filename
+    const selectedMonthLabel = this.meses.find(m => m.value === this.selectedMonth)?.label || 'Mes';
+
+    // Generate file name
+    const fileName = `atenciones-grupales-${selectedMonthLabel.toLowerCase().replace(' ', '-')}.xlsx`;
+
+    // Download file
+    XLSX.writeFile(wb, fileName);
+
+    this.showNotificationModal('¡Archivo Excel descargado exitosamente! 📊', 'success');
   }
 
   getMonthName(monthNumber: number): string {

@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { HistoriasService } from '../../services/historias.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -188,5 +189,28 @@ export class HistoriaClinicaComponent implements OnInit {
   cancelarEliminar() {
     this.showDeleteModal = false;
     this.historiaToDelete = null;
+  }
+
+  exportarExcel(): void {
+    if (this.filteredHistorias.length === 0) {
+      alert('No hay datos para exportar');
+      return;
+    }
+
+    const datos = this.filteredHistorias.map((historia, index) => ({
+      '#': index + 1,
+      'Paciente': historia.pacienteNombre,
+      'Fecha': historia.fecha,
+      'Nivel de Riesgo': this.getRiesgoLabel(historia.nivelRiesgo),
+      'Resumen': historia.resumen.replace(/\n/g, ' '),
+      'Número de Sesiones': historia.numSesiones
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datos);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Historias Clínicas');
+
+    const fecha = new Date().toLocaleDateString('es-CO').replace(/\//g, '-');
+    XLSX.writeFile(wb, `historias-clinicas-${fecha}.xlsx`);
   }
 }

@@ -34,6 +34,7 @@
   <div class="header-section">
     <h1 class="page-title">📋 Lista de Reportes Emocionales</h1>
     <a routerLink="/reportes-emocionales" class="btn-create">➕ Crear Nuevo Reporte</a>
+    <button class="btn-excel" (click)="exportarExcel()" *ngIf="reportes.length > 0">📊 Exportar Excel</button>
   </div>
 
   <div class="loading" *ngIf="loading">

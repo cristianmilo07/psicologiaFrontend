@@ -38,6 +38,7 @@
         </select>
         <button class="add-button" (click)="toggleForm()">+ Agregar Atención</button>
         <button class="pdf-button" (click)="descargarPDF()" *ngIf="!loading && atenciones.length > 0">📄 Exportar PDF</button>
+        <button class="excel-button" (click)="exportarExcel()" *ngIf="!loading && atenciones.length > 0">📊 Exportar Excel</button>
       </div>
     </div>
 

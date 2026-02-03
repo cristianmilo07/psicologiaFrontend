@@ -35,6 +35,7 @@
      <!-- Botón Nueva Historia, Buscador y Filtro -->
      <div class="actions-section">
        <button class="btn-nueva-historia" routerLink="/nueva-historia-clinica">+ Nueva Historia Clínica</button>
+       <button class="btn-excel" (click)="exportarExcel()" *ngIf="filteredHistorias.length > 0">📊 Exportar Excel</button>
        <div class="search-container">
          <input type="text" placeholder="Buscar por nombre del paciente..." class="search-input" [(ngModel)]="searchTerm" (input)="filterHistorias()">
          <span class="search-icon">🔍</span>

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -21,6 +21,7 @@
     "html2pdf.js": "^0.14.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {

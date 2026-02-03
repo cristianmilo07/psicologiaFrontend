@@ -195,6 +195,26 @@
       }
     }
 
+    .btn-excel {
+      background: #217346;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(33, 115, 70, 0.3);
+      margin-left: 10px;
+
+      &:hover {
+        background: #1e6b42;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(33, 115, 70, 0.4);
+      }
+    }
+
     .search-container {
       position: relative;
       display: flex;
