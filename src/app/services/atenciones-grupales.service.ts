@@ -12,6 +12,7 @@ export interface AtencionGrupal {
   objetivos?: string;
   actividades?: string;
   observaciones?: string;
+  imagenes?: string[];
   createdBy?: string;
   createdAt?: string;
   updatedAt?: string;
