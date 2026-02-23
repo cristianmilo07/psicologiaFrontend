@@ -84,6 +84,25 @@
             <label for="observaciones">📝 Observaciones:</label>
             <textarea id="observaciones" [(ngModel)]="nuevaAtencion.observaciones" name="observaciones" placeholder="Observaciones adicionales" rows="3"></textarea>
           </div>
+          
+          <!-- Image Upload Section for New Form -->
+          <div class="form-group">
+            <label>📷 Imágenes (opcional):</label>
+            <div class="image-upload-area">
+              <input type="file" id="imagenes" multiple accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none;">
+              <button type="button" class="upload-btn" (click)="fileInput.click()">
+                📁 Seleccionar Imágenes
+              </button>
+              <span class="upload-hint">Máximo 5 imágenes, 5MB cada una</span>
+            </div>
+            <div class="image-previews" *ngIf="imagePreviews.length > 0">
+              <div class="preview-item" *ngFor="let preview of imagePreviews; let i = index">
+                <img [src]="preview" [alt]="'Preview ' + (i + 1)">
+                <button type="button" class="remove-image-btn" (click)="removeImage(i, 'new')">×</button>
+              </div>
+            </div>
+          </div>
+          
           <div class="form-actions">
             <button type="submit" class="save-button">💾 Guardar Atención</button>
             <button type="button" class="cancel-button" (click)="toggleForm()">❌ Cancelar</button>
@@ -139,8 +158,18 @@
               <div class="session-info">
                 <p>📅 {{ atencion.fecha | date:'dd/MM/yyyy' }} – <strong>{{ atencion.tema }}</strong></p>
                 <p class="session-details">👥 {{ atencion.numeroParticipantes }} participantes</p>
+                <p class="session-images" *ngIf="atencion.imagenes && atencion.imagenes.length > 0">
+                  📷 {{ atencion.imagenes.length }} imagen(es)
+                </p>
+                <!-- Image thumbnails in detail view -->
+                <div class="session-thumbnails" *ngIf="atencion.imagenes && atencion.imagenes.length > 0">
+                  <div class="thumbnail-item" *ngFor="let imagen of atencion.imagenes; let i = index" (click)="openImagePreview(getImageUrl(imagen))">
+                    <img [src]="getImageUrl(imagen)" [alt]="'Imagen ' + (i + 1)">
+                  </div>
+                </div>
               </div>
               <div class="session-actions">
+                <button class="btn-action btn-images" (click)="openImageModal(atencion)" title="Ver imágenes" *ngIf="atencion.imagenes && atencion.imagenes.length > 0">📷</button>
                 <button class="btn-action btn-edit" (click)="handleEdit(atencion)" title="Editar">✏️</button>
                 <button class="btn-action btn-delete" (click)="handleDelete(atencion._id!)" title="Eliminar">🗑️</button>
               </div>
@@ -204,12 +233,97 @@
             <label for="editObservaciones">📝 Observaciones:</label>
             <textarea id="editObservaciones" [(ngModel)]="editarAtencion.observaciones" name="observaciones" placeholder="Observaciones adicionales" rows="3"></textarea>
           </div>
+          
+          <!-- Existing Images Section -->
+          <div class="form-group" *ngIf="editarAtencion.imagenes && editarAtencion.imagenes.length > 0">
+            <label>📷 Imágenes guardadas:</label>
+            <div class="image-previews">
+              <div class="preview-item" *ngFor="let imagen of editarAtencion.imagenes; let i = index">
+                <img [src]="getImageUrl(imagen)" [alt]="'Imagen ' + (i + 1)">
+                <button type="button" class="remove-image-btn" (click)="deleteEditImage(i)">×</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Add New Images Section -->
+          <div class="form-group">
+            <label>📷 Agregar más imágenes:</label>
+            <div class="image-upload-area">
+              <input type="file" id="editImagenes" multiple accept="image/*" (change)="onEditFileSelected($event)" #editFileInput style="display: none;">
+              <button type="button" class="upload-btn" (click)="editFileInput.click()">
+                📁 Seleccionar Imágenes
+              </button>
+              <span class="upload-hint">Máximo 5 imágenes, 5MB cada una</span>
+            </div>
+            <div class="image-previews" *ngIf="editImagePreviews.length > 0">
+              <div class="preview-item" *ngFor="let preview of editImagePreviews; let i = index">
+                <img [src]="preview" [alt]="'Preview ' + (i + 1)">
+                <button type="button" class="remove-image-btn" (click)="removeImage(i, 'edit')">×</button>
+              </div>
+            </div>
+            <button type="button" class="upload-images-btn" (click)="uploadEditImages()" *ngIf="selectedEditFiles.length > 0" [disabled]="uploadingImages">
+              {{ uploadingImages ? '⏳ Subiendo...' : '📤 Subir Imágenes' }}
+            </button>
+          </div>
+          
           <div class="form-actions">
             <button type="submit" class="save-button">💾 Guardar Cambios</button>
             <button type="button" class="cancel-button" (click)="toggleEditForm()">❌ Cancelar</button>
           </div>
         </form>
       </div>
+    </div>
+    
+    <!-- Image Gallery Modal -->
+    <div class="modal-overlay" *ngIf="showImageModal" (click)="closeImageModal()">
+      <div class="modal-content image-gallery-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>📷 Galería de Imágenes</h3>
+          <button class="close-button" (click)="closeImageModal()">×</button>
+        </div>
+        <div class="image-gallery-content" *ngIf="selectedAtencionForImages">
+          <div class="gallery-info">
+            <p><strong>{{ selectedAtencionForImages.tema }}</strong></p>
+            <p>📅 {{ selectedAtencionForImages.fecha | date:'dd/MM/yyyy' }} | 👥 {{ selectedAtencionForImages.numeroParticipantes }} participantes</p>
+          </div>
+          
+          <!-- Upload new images section -->
+          <div class="gallery-upload-section">
+            <div class="image-upload-area">
+              <input type="file" id="galleryImagenes" multiple accept="image/*" (change)="onFileSelected($event)" #galleryFileInput style="display: none;">
+              <button type="button" class="upload-btn" (click)="galleryFileInput.click()">
+                📁 Agregar Imágenes
+              </button>
+            </div>
+            <div class="image-previews" *ngIf="imagePreviews.length > 0">
+              <div class="preview-item" *ngFor="let preview of imagePreviews; let i = index">
+                <img [src]="preview" [alt]="'Preview ' + (i + 1)">
+                <button type="button" class="remove-image-btn" (click)="removeImage(i, 'new')">×</button>
+              </div>
+            </div>
+            <button type="button" class="upload-images-btn" (click)="uploadImages()" *ngIf="selectedFiles.length > 0" [disabled]="uploadingImages">
+              {{ uploadingImages ? '⏳ Subiendo...' : '📤 Subir Imágenes' }}
+            </button>
+          </div>
+          
+          <!-- Existing images gallery -->
+          <div class="gallery-images" *ngIf="selectedAtencionForImages.imagenes && selectedAtencionForImages.imagenes.length > 0">
+            <div class="gallery-image-item" *ngFor="let imagen of selectedAtencionForImages.imagenes; let i = index">
+              <img [src]="getImageUrl(imagen)" [alt]="'Imagen ' + (i + 1)" (click)="openImagePreview(getImageUrl(imagen))">
+              <button type="button" class="delete-gallery-image" (click)="deleteImage(i)">🗑️</button>
+            </div>
+          </div>
+          <div class="no-images" *ngIf="!selectedAtencionForImages.imagenes || selectedAtencionForImages.imagenes.length === 0">
+            <p>No hay imágenes para esta atención grupal</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Full Image Preview Modal -->
+    <div class="image-preview-overlay" *ngIf="previewImageUrl" (click)="previewImageUrl = null">
+      <img [src]="previewImageUrl" (click)="$event.stopPropagation()">
+      <button class="close-preview-btn" (click)="previewImageUrl = null">×</button>
     </div>
   </main>
 </div>

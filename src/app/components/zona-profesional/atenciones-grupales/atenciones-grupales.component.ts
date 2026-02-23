@@ -49,11 +49,22 @@ export class AtencionesGrupalesComponent implements OnInit {
     numeroParticipantes: 1,
     objetivos: '',
     actividades: '',
-    observaciones: ''
+    observaciones: '',
+    imagenes: []
   };
 
   editarAtencion: Partial<AtencionGrupal> = {};
   editingId: string = '';
+  
+  // Image upload properties
+  selectedFiles: File[] = [];
+  imagePreviews: string[] = [];
+  selectedEditFiles: File[] = [];
+  editImagePreviews: string[] = [];
+  uploadingImages = false;
+  showImageModal = false;
+  selectedAtencionForImages: AtencionGrupal | null = null;
+  previewImageUrl: string | null = null;
 
   grados = [
     'Preescolar', 'Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto',
@@ -158,6 +169,9 @@ export class AtencionesGrupalesComponent implements OnInit {
 
   toggleForm() {
     this.showForm = !this.showForm;
+    if (!this.showForm) {
+      this.clearImageSelection();
+    }
   }
 
   guardarAtencion() {
@@ -168,7 +182,22 @@ export class AtencionesGrupalesComponent implements OnInit {
 
     this.atencionesService.crearAtencion(this.nuevaAtencion).subscribe({
       next: (response) => {
-        this.showNotificationModal('¡Atención grupal guardada exitosamente! 🎉', 'success');
+        // If there are images to upload, upload them now
+        if (this.selectedFiles.length > 0 && response.atencion._id) {
+          this.atencionesService.subirImagenes(response.atencion._id, this.selectedFiles).subscribe({
+            next: () => {
+              this.showNotificationModal('¡Atención grupal guardada con imágenes exitosamente! 🎉', 'success');
+              this.clearImageSelection();
+            },
+            error: (error) => {
+              console.error('Error al subir imágenes:', error);
+              this.showNotificationModal('¡Atención guardada, pero hubo error al subir las imágenes! 📷', 'success');
+            }
+          });
+        } else {
+          this.showNotificationModal('¡Atención grupal guardada exitosamente! 🎉', 'success');
+        }
+        
         this.showForm = false;
 
         // Update selected month to match the saved date's month/year
@@ -297,8 +326,10 @@ export class AtencionesGrupalesComponent implements OnInit {
       numeroParticipantes: 1,
       objetivos: '',
       actividades: '',
-      observaciones: ''
+      observaciones: '',
+      imagenes: []
     };
+    this.clearImageSelection();
   }
 
   getAtencionDetails(grado: string, dia: number): string {
@@ -329,7 +360,10 @@ export class AtencionesGrupalesComponent implements OnInit {
 
   handleEdit(atencion: AtencionGrupal): void {
     this.editingId = atencion._id!;
-    this.editarAtencion = { ...atencion };
+    this.editarAtencion = { 
+      ...atencion,
+      imagenes: atencion.imagenes ? [...atencion.imagenes] : []
+    };
     this.toggleEditForm();
   }
 
@@ -338,6 +372,7 @@ export class AtencionesGrupalesComponent implements OnInit {
     if (!this.showEditForm) {
       this.editarAtencion = {};
       this.editingId = '';
+      this.clearEditImageSelection();
     }
   }
 
@@ -358,5 +393,181 @@ export class AtencionesGrupalesComponent implements OnInit {
         this.showNotificationModal('Error al actualizar la atención grupal 😔', 'error');
       }
     });
+  }
+
+  // Image handling methods
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.processFiles(Array.from(input.files), 'new');
+    }
+  }
+
+  onEditFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.processFiles(Array.from(input.files), 'edit');
+    }
+  }
+
+  processFiles(files: File[], mode: 'new' | 'edit'): void {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    for (const file of files) {
+      if (!allowedTypes.includes(file.type)) {
+        this.showNotificationModal(`Archivo ${file.name} no es una imagen válida`, 'error');
+        continue;
+      }
+      if (file.size > maxSize) {
+        this.showNotificationModal(`Archivo ${file.name} excede el tamaño máximo de 5MB`, 'error');
+        continue;
+      }
+
+      if (mode === 'new') {
+        this.selectedFiles.push(file);
+      } else {
+        this.selectedEditFiles.push(file);
+      }
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (mode === 'new') {
+          this.imagePreviews.push(e.target?.result as string);
+        } else {
+          this.editImagePreviews.push(e.target?.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage(index: number, mode: 'new' | 'edit'): void {
+    if (mode === 'new') {
+      this.selectedFiles.splice(index, 1);
+      this.imagePreviews.splice(index, 1);
+    } else {
+      this.selectedEditFiles.splice(index, 1);
+      this.editImagePreviews.splice(index, 1);
+    }
+  }
+
+  clearImageSelection(): void {
+    this.selectedFiles = [];
+    this.imagePreviews = [];
+  }
+
+  clearEditImageSelection(): void {
+    this.selectedEditFiles = [];
+    this.editImagePreviews = [];
+  }
+
+  openImageModal(atencion: AtencionGrupal): void {
+    this.selectedAtencionForImages = atencion;
+    this.showImageModal = true;
+  }
+
+  closeImageModal(): void {
+    this.showImageModal = false;
+    this.selectedAtencionForImages = null;
+    this.clearEditImageSelection();
+  }
+
+  uploadImages(): void {
+    if (!this.selectedAtencionForImages?._id || this.selectedFiles.length === 0) {
+      this.showNotificationModal('No hay imágenes para subir', 'error');
+      return;
+    }
+
+    this.uploadingImages = true;
+    this.atencionesService.subirImagenes(this.selectedAtencionForImages._id, this.selectedFiles).subscribe({
+      next: (response) => {
+        this.showNotificationModal('¡Imágenes subidas exitosamente! 📷', 'success');
+        this.clearImageSelection();
+        this.loadAtenciones();
+        this.uploadingImages = false;
+        // Update the modal with new images
+        if (this.selectedAtencionForImages) {
+          this.selectedAtencionForImages.imagenes = response.atencion.imagenes;
+        }
+      },
+      error: (error) => {
+        console.error('Error al subir imágenes:', error);
+        this.showNotificationModal('Error al subir las imágenes 😔', 'error');
+        this.uploadingImages = false;
+      }
+    });
+  }
+
+  uploadEditImages(): void {
+    if (!this.editingId || this.selectedEditFiles.length === 0) {
+      return;
+    }
+
+    this.uploadingImages = true;
+    this.atencionesService.subirImagenes(this.editingId, this.selectedEditFiles).subscribe({
+      next: (response) => {
+        this.showNotificationModal('¡Imágenes subidas exitosamente! 📷', 'success');
+        this.clearEditImageSelection();
+        this.loadAtenciones();
+        this.uploadingImages = false;
+        // Update editAtencion with new images
+        this.editarAtencion.imagenes = response.atencion.imagenes;
+      },
+      error: (error) => {
+        console.error('Error al subir imágenes:', error);
+        this.showNotificationModal('Error al subir las imágenes 😔', 'error');
+        this.uploadingImages = false;
+      }
+    });
+  }
+
+  deleteImage(imageIndex: number): void {
+    if (!this.selectedAtencionForImages?._id) return;
+
+    if (confirm('¿Está seguro de que desea eliminar esta imagen?')) {
+      this.atencionesService.eliminarImagen(this.selectedAtencionForImages._id, imageIndex).subscribe({
+        next: (response) => {
+          this.showNotificationModal('¡Imagen eliminada exitosamente! 🗑️', 'success');
+          this.selectedAtencionForImages!.imagenes = response.atencion.imagenes;
+          this.loadAtenciones();
+        },
+        error: (error) => {
+          console.error('Error al eliminar imagen:', error);
+          this.showNotificationModal('Error al eliminar la imagen 😔', 'error');
+        }
+      });
+    }
+  }
+
+  deleteEditImage(imageIndex: number): void {
+    if (!this.editingId) return;
+
+    if (confirm('¿Está seguro de que desea eliminar esta imagen?')) {
+      this.atencionesService.eliminarImagen(this.editingId, imageIndex).subscribe({
+        next: (response) => {
+          this.showNotificationModal('¡Imagen eliminada exitosamente! 🗑️', 'success');
+          this.editarAtencion.imagenes = response.atencion.imagenes;
+          this.loadAtenciones();
+        },
+        error: (error) => {
+          console.error('Error al eliminar imagen:', error);
+          this.showNotificationModal('Error al eliminar la imagen 😔', 'error');
+        }
+      });
+    }
+  }
+
+  getImageUrl(relativePath: string): string {
+    if (!relativePath) return '';
+    // If the path already starts with http, return it as is
+    if (relativePath.startsWith('http')) return relativePath;
+    // Otherwise, prepend the base URL
+    return this.atencionesService.getImageUrl(relativePath);
+  }
+
+  openImagePreview(url: string): void {
+    this.previewImageUrl = url;
   }
 }
