@@ -90,11 +90,6 @@ export const routes: Routes = [
     path: 'estudiantes',
     loadComponent: () => import('./components/estudiantes/estudiantes.component').then(m => m.EstudiantesComponent)
   },
-  {
-    path: 'cambiar-password',
-    loadComponent: () => import('./components/cambiar-password/cambiar-password.component').then(m => m.CambiarPasswordComponent),
-    canActivate: [AuthGuard]
-  }
 
 ];
 
