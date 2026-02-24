@@ -1,0 +1,352 @@
+<div class="zona-container">
+  <div class="background-decoration">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">⭐</div>
+  </div>
+
+  <header class="section-header">
+    <div class="header-left">
+      <span class="star-icon"><img src="assets/images/logoCarolinaPsicologa.png" alt="Logo Carolina Psicóloga" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></span>
+      <a routerLink="/zona-profesional" class="back-link">← Volver</a>
+    </div>
+    <div class="header-center">
+      <h1 class="section-title">Tests de Salud Mental</h1>
+    </div>
+    <div class="header-right">
+      <div class="dropdown">
+        <select class="dropdown-select" (change)="onSelectChange($event)">
+          <option value="">Usuario</option>
+          <option value="logout">Cerrar Sesión</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="welcome-section">
+      <h2 class="welcome-title">
+        Tests Psicométricos Validados
+        <span class="title-star">⭐</span>
+      </h2>
+      <p class="welcome-subtitle">PHQ-9 (Depresión) y GAD-7 (Ansiedad) - Instrumentos de evaluación estandarizados</p>
+      
+      <div class="action-buttons">
+        <button class="add-button" (click)="openTestForm()">+ Aplicar Test</button>
+        <button class="alert-button" (click)="toggleAlertsList()" *ngIf="alertas.length > 0">
+          ⚠️ Alertas ({{ alertas.length }})
+        </button>
+      </div>
+    </div>
+
+    <!-- Alerts Section -->
+    <div class="alerts-section" *ngIf="showAlertsList && alertas.length > 0">
+      <h3>⚠️ Alertas de Ideación Suicida</h3>
+      <p class="alert-warning">Los siguientes pacientes requieren atención inmediata:</p>
+      <div class="alerts-list">
+        <div class="alert-item" *ngFor="let alerta of alertas">
+          <div class="alert-info">
+            <span class="alert-paciente">{{ getPacienteName(alerta) }}</span>
+            <span class="alert-test">{{ alerta.tipoTest }}</span>
+            <span class="alert-fecha">{{ formatDate(alerta.fecha) }}</span>
+          </div>
+          <div class="alert-actions">
+            <button class="btn-view" (click)="verTest(alerta)">Ver Detalles</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="search-box">
+        <input type="text" placeholder="Buscar paciente..." [(ngModel)]="searchQuery" (input)="applyFilters()">
+      </div>
+      <div class="filter-options">
+        <select [(ngModel)]="filterTipo" (change)="applyFilters()">
+          <option value="">Todos los tipos</option>
+          <option value="PHQ9">PHQ-9</option>
+          <option value="GAD7">GAD-7</option>
+        </select>
+        <select [(ngModel)]="filterRiesgo" (change)="applyFilters()">
+          <option value="">Todos los niveles</option>
+          <option value="Bajo">Bajo</option>
+          <option value="Medio">Medio</option>
+          <option value="Alto">Alto</option>
+        </select>
+        <button class="btn-clear-filters" (click)="clearFilters()">Limpiar</button>
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading-indicator" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Cargando tests...</p>
+    </div>
+
+    <!-- Tests List -->
+    <div class="tests-list" *ngIf="!loading && filteredTests.length > 0">
+      <div class="test-card" *ngFor="let test of filteredTests">
+        <div class="test-header">
+          <span class="test-type" [ngClass]="{'phq9': test.tipoTest === 'PHQ9', 'gad7': test.tipoTest === 'GAD7'}">
+            {{ test.tipoTest === 'PHQ9' ? 'PHQ-9' : 'GAD-7' }}
+          </span>
+          <span class="test-date">{{ formatDate(test.fecha) }}</span>
+        </div>
+        
+        <div class="test-body">
+          <div class="patient-info">
+            <span class="patient-icon">👤</span>
+            <span class="patient-name">{{ getPacienteName(test) }}</span>
+          </div>
+          
+          <div class="score-section">
+            <div class="score-display" [style.background]="getNivelRiesgoBgColor(test.nivelRiesgo)">
+              <span class="score-label">Puntaje</span>
+              <span class="score-value">{{ test.puntajeTotal }}</span>
+            </div>
+            <div class="risk-level" [style.background]="getNivelRiesgoColor(test.nivelRiesgo)">
+              {{ test.nivelRiesgo }}
+            </div>
+          </div>
+          
+          <div class="alert-badge" *ngIf="test.alertaSuicida">
+            ⚠️ Alerta Suicida
+          </div>
+        </div>
+        
+        <div class="test-actions">
+          <button class="btn-view" (click)="verTest(test)">Ver Detalles</button>
+          <button class="btn-stats" (click)="verEstadisticas(test.pacienteId)">Estadísticas</button>
+          <button class="btn-delete" (click)="eliminarTest(test)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- No tests message -->
+    <div class="no-tests" *ngIf="!loading && filteredTests.length === 0">
+      <p>No se encontraron tests</p>
+      <button class="add-button" (click)="openTestForm()">Aplicar primer test</button>
+    </div>
+  </main>
+</div>
+
+<!-- Test Form Modal -->
+<div class="modal-overlay" *ngIf="showTestForm" (click)="closeTestForm()">
+  <div class="modal-content test-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📋 Aplicar Test Psicométrico</h3>
+      <button class="close-button" (click)="closeTestForm()">×</button>
+    </div>
+    
+    <!-- Patient Selector -->
+    <div class="patient-selector" *ngIf="showPatientSelector">
+      <h4>Seleccione el paciente:</h4>
+      <p class="hint">Ingrese el ID del paciente o selecciónelo de la lista</p>
+      <div class="patient-input">
+        <input type="text" placeholder="ID del paciente" [(ngModel)]="selectedPatientId">
+      </div>
+      <button class="btn-continue" (click)="onPatientSelect()" [disabled]="!selectedPatientId">
+        Continuar
+      </button>
+    </div>
+    
+    <!-- Test Type Selection -->
+    <div class="test-type-selection" *ngIf="!showPatientSelector">
+      <h4>Tipo de Test:</h4>
+      <div class="test-type-buttons">
+        <button 
+          class="type-btn phq9-btn" 
+          [class.active]="selectedTestType === 'PHQ9'"
+          (click)="selectTestType('PHQ9')">
+          PHQ-9 (Depresión)
+        </button>
+        <button 
+          class="type-btn gad7-btn" 
+          [class.active]="selectedTestType === 'GAD7'"
+          (click)="selectTestType('GAD7')">
+          GAD-7 (Ansiedad)
+        </button>
+      </div>
+      
+      <!-- Date Selection -->
+      <div class="date-selection">
+        <label for="testDate">Fecha de aplicación:</label>
+        <input type="date" id="testDate" [(ngModel)]="testDate">
+      </div>
+      
+      <!-- Questions -->
+      <div class="questions-section" *ngIf="testPreguntas">
+        <h4>Preguntas:</h4>
+        <p class="instruction">Responda según la frecuencia en las últimas 2 semanas:</p>
+        
+        <div class="question-item" *ngFor="let pregunta of testPreguntas.preguntas; let i = index">
+          <div class="question-number">{{ i + 1 }}.</div>
+          <div class="question-text">{{ pregunta }}</div>
+          <div class="response-options">
+            <button 
+              *ngFor="let opcion of testPreguntas.opciones"
+              class="option-btn"
+              [class.selected]="respuestas[i] === opcion.valor"
+              (click)="setRespuesta(i, opcion.valor)">
+              {{ opcion.texto }}
+            </button>
+          </div>
+        </div>
+        
+        <!-- Observations -->
+        <div class="observations-section">
+          <label for="observaciones">Observaciones (opcional):</label>
+          <textarea id="observaciones" [(ngModel)]="observaciones" placeholder="Notas adicionales sobre el test..." rows="3"></textarea>
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button class="btn-cancel" (click)="closeTestForm()">Cancelar</button>
+          <button class="btn-submit" (click)="guardarTest()">Guardar Test</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Test Details Modal -->
+<div class="modal-overlay" *ngIf="showTestDetails" (click)="cerrarTestDetails()">
+  <div class="modal-content details-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📋 Detalles del Test</h3>
+      <button class="close-button" (click)="cerrarTestDetails()">×</button>
+    </div>
+    
+    <div class="details-body" *ngIf="selectedTest">
+      <div class="detail-row">
+        <span class="detail-label">Tipo:</span>
+        <span class="detail-value">{{ selectedTest.tipoTest === 'PHQ9' ? 'PHQ-9 (Depresión)' : 'GAD-7 (Ansiedad)' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Paciente:</span>
+        <span class="detail-value">{{ getPacienteName(selectedTest) }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Fecha:</span>
+        <span class="detail-value">{{ formatDate(selectedTest.fecha) }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Puntaje Total:</span>
+        <span class="detail-value score" [style.color]="getNivelRiesgoColor(selectedTest.nivelRiesgo)">
+          {{ selectedTest.puntajeTotal }}
+        </span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Nivel de Riesgo:</span>
+        <span class="detail-value risk-badge" [style.background]="getNivelRiesgoColor(selectedTest.nivelRiesgo)">
+          {{ selectedTest.nivelRiesgo }}
+        </span>
+      </div>
+      
+      <div class="alert-warning" *ngIf="selectedTest.alertaSuicida">
+        ⚠️ ALERTA: El paciente reportó ideación suicida. Se requiere atención inmediata.
+      </div>
+      
+      <div class="responses-section">
+        <h4>Respuestas:</h4>
+        <div class="response-item" *ngFor="let respuesta of selectedTest.respuestas; let i = index">
+          <span class="response-number">P{{ i + 1 }}</span>
+          <span class="response-value">{{ respuesta }}</span>
+          <div class="response-bar">
+            <div class="bar-fill" [style.width.%]="(respuesta / 3) * 100"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="observations-display" *ngIf="selectedTest.observaciones">
+        <h4>Observaciones:</h4>
+        <p>{{ selectedTest.observaciones }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart Modal -->
+<div class="modal-overlay" *ngIf="showChart" (click)="closeChart()">
+  <div class="modal-content chart-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📊 Evolución Temporal</h3>
+      <button class="close-button" (click)="closeChart()">×</button>
+    </div>
+    
+    <div class="chart-body">
+      <div class="chart-type-selector">
+        <button 
+          class="chart-type-btn" 
+          [class.active]="selectedChartType === 'PHQ9'"
+          (click)="switchChartType('PHQ9')">
+          PHQ-9
+        </button>
+        <button 
+          class="chart-type-btn" 
+          [class.active]="selectedChartType === 'GAD7'"
+          (click)="switchChartType('GAD7')">
+          GAD-7
+        </button>
+      </div>
+      
+      <div class="chart-container">
+        <canvas id="testChart"></canvas>
+      </div>
+      
+      <div class="stats-summary" *ngIf="estadisticas">
+        <div class="stat-item" *ngIf="selectedChartType === 'PHQ9'">
+          <span class="stat-label">Promedio PHQ-9:</span>
+          <span class="stat-value">{{ estadisticas.phq9.avgScore }}</span>
+        </div>
+        <div class="stat-item" *ngIf="selectedChartType === 'GAD7'">
+          <span class="stat-label">Promedio GAD-7:</span>
+          <span class="stat-value">{{ estadisticas.gad7.avgScore }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Total Tests:</span>
+          <span class="stat-value">{{ estadisticas.totalTests }}</span>
+        </div>
+      </div>
+      
+      <!-- Legend -->
+      <div class="chart-legend">
+        <div class="legend-item">
+          <span class="legend-color" style="background: #4CAF50;"></span>
+          <span>Bajo</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background: #FF9800;"></span>
+          <span>Medio</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background: #F44336;"></span>
+          <span>Alto</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Alert Modal -->
+<div class="modal-overlay alert-overlay" *ngIf="showAlertModal" (click)="closeAlertModal()">
+  <div class="modal-content alert-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header alert-header">
+      <h3>⚠️ ALERTA CRÍTICA</h3>
+    </div>
+    <div class="alert-body">
+      <p class="alert-message">{{ alertMessage }}</p>
+      <p class="alert-instruction">Por favor, contacte inmediatamente al paciente y siga los protocolos de intervención en crisis establecidos.</p>
+      <div class="alert-actions">
+        <button class="btn-acknowledge" (click)="closeAlertModal()">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification Toast -->
+<div class="notification-toast" [class.show]="showNotification" [ngClass]="notificationType">
+  {{ notificationMessage }}
+</div>

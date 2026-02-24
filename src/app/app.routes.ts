@@ -82,8 +82,18 @@ export const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard(['professional', 'admin'])]
   },
   {
+    path: 'tests-salud-mental',
+    loadComponent: () => import('./components/zona-profesional/tests/tests.component').then(m => m.TestsComponent),
+    canActivate: [AuthGuard, RoleGuard(['professional', 'admin'])]
+  },
+  {
     path: 'estudiantes',
     loadComponent: () => import('./components/estudiantes/estudiantes.component').then(m => m.EstudiantesComponent)
+  },
+  {
+    path: 'cambiar-password',
+    loadComponent: () => import('./components/cambiar-password/cambiar-password.component').then(m => m.CambiarPasswordComponent),
+    canActivate: [AuthGuard]
   }
 
 ];
