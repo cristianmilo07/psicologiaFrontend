@@ -51,7 +51,7 @@ export interface TestCreateResponse {
 export class TestsService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
-  private apiUrl = 'http://localhost:3000/api/tests';
+  private apiUrl = 'https://psicologiabackend.onrender.com/api/tests';
 
   private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
